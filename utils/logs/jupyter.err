@@ -30,3 +30,6 @@
 [I 16:15:21.720 NotebookApp] 302 GET /tree/notebooks (127.0.0.1) 159.38ms
 [W 16:15:26.331 NotebookApp] 401 POST /login?next=%2Ftree%2Fnotebooks (127.0.0.1) 4.74ms referer=http://localhost:8888/login?next=%2Ftree%2Fnotebooks
 [I 16:17:33.328 NotebookApp] 302 POST /login?next=%2Ftree%2Fnotebooks (127.0.0.1) 3.94ms
+[W 11:34:37.889 NotebookApp] 404 GET /api/contents/plots/SRP029589_human?type=directory&_=1542061337814 (127.0.0.1): No such file or directory: plots/SRP029589_human
+[W 11:34:37.975 NotebookApp] No such file or directory: plots/SRP029589_human
+[W 11:34:38.013 NotebookApp] 404 GET /api/contents/plots/SRP029589_human?type=directory&_=1542061337814 (127.0.0.1) 232.37ms referer=http://localhost:8888/tree/plots/SRP029589_human
