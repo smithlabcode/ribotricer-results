@@ -33,3 +33,62 @@
 [W 11:34:37.889 NotebookApp] 404 GET /api/contents/plots/SRP029589_human?type=directory&_=1542061337814 (127.0.0.1): No such file or directory: plots/SRP029589_human
 [W 11:34:37.975 NotebookApp] No such file or directory: plots/SRP029589_human
 [W 11:34:38.013 NotebookApp] 404 GET /api/contents/plots/SRP029589_human?type=directory&_=1542061337814 (127.0.0.1) 232.37ms referer=http://localhost:8888/tree/plots/SRP029589_human
+[I 14:55:04.267 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 14:57:04.265 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 16:01:05.157 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 17:57:04.370 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 17:59:04.255 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 18:00:52.358 NotebookApp] Kernel interrupted: e44940aa-c876-46c2-8e7d-f69f8081bb33
+[I 18:00:53.543 NotebookApp] Kernel interrupted: e44940aa-c876-46c2-8e7d-f69f8081bb33
+[I 18:01:04.252 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 18:01:52.886 NotebookApp] Kernel interrupted: e44940aa-c876-46c2-8e7d-f69f8081bb33
+[I 18:01:55.959 NotebookApp] Kernel interrupted: e44940aa-c876-46c2-8e7d-f69f8081bb33
+[I 18:03:04.253 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 18:05:04.253 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
+[I 18:16:21.634 NotebookApp] Starting buffering for e44940aa-c876-46c2-8e7d-f69f8081bb33:553e5b23c40e4afb9570adf82778d70b
+[I 18:16:33.886 NotebookApp] Kernel started: 2930d4a7-fa7e-4279-a4ea-244284c55d41
+[W 18:16:43.969 NotebookApp] Timeout waiting for kernel_info reply from 2930d4a7-fa7e-4279-a4ea-244284c55d41
+[I 18:16:48.580 NotebookApp] Kernel started: 9e93ed19-45bb-429f-86be-90a80a09ea49
+[W 18:16:58.693 NotebookApp] Timeout waiting for kernel_info reply from 9e93ed19-45bb-429f-86be-90a80a09ea49
+[W 18:17:03.285 NotebookApp] zmq message arrived on closed channel
+[W 18:17:03.287 NotebookApp] zmq message arrived on closed channel
+[I 18:17:03.290 NotebookApp] Adapting to protocol v5.1 for kernel 2930d4a7-fa7e-4279-a4ea-244284c55d41
+[W 18:17:03.292 NotebookApp] zmq message arrived on closed channel
+[I 18:17:22.225 NotebookApp] Adapting to protocol v5.1 for kernel 9e93ed19-45bb-429f-86be-90a80a09ea49
+[I 18:17:34.394 NotebookApp] 302 GET /notebooks/notebooks/results/SRR5227306SRR5227306.pdf (127.0.0.1) 4.60ms
+[I 18:17:34.461 NotebookApp] Kernel started: c7cca82b-595c-48e0-bedd-e6a029b5d381
+[I 18:17:36.998 NotebookApp] Adapting to protocol v5.1 for kernel c7cca82b-595c-48e0-bedd-e6a029b5d381
+[I 18:19:35.138 NotebookApp] Saving file at /notebooks/adapter-Copy1.ipynb
+[I 18:19:45.599 NotebookApp] Starting buffering for 9e93ed19-45bb-429f-86be-90a80a09ea49:8f2dd8cb7eae4f0fb5a9c5282e907107
+[I 18:21:34.445 NotebookApp] Saving file at /notebooks/adapter-Copy1.ipynb
+[I 18:23:34.435 NotebookApp] Saving file at /notebooks/adapter-Copy1.ipynb
+[I 18:25:34.439 NotebookApp] Saving file at /notebooks/adapter-Copy1.ipynb
+[I 11:37:34.496 NotebookApp] Saving file at /notebooks/adapter-Copy1.ipynb
+[I 11:39:34.365 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 11:41:34.367 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 11:43:34.366 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 11:45:34.369 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 11:47:34.366 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 11:49:34.367 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 11:51:34.365 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 11:55:34.370 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:26:35.655 NotebookApp] Starting buffering for 9e93ed19-45bb-429f-86be-90a80a09ea49:5ab4dc0f0dd640fb98009dfbd7529bb3
+[I 12:27:14.027 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:27:37.300 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:29:37.303 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:31:37.303 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:33:37.301 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:35:38.074 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:41:37.306 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:43:37.298 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:45:37.301 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:47:37.294 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:49:37.301 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:53:37.303 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:55:37.300 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 12:57:38.066 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 13:03:37.298 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 13:05:37.299 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 13:07:38.068 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 13:09:37.300 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
+[I 13:11:37.301 NotebookApp] Saving file at /notebooks/adapter-finder.ipynb
