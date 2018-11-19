@@ -97,3 +97,12 @@
 [I 11:43:19.883 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
 [I 12:09:19.559 NotebookApp] Saving file at /notebooks/noncentered-chi2.ipynb
 [I 13:07:30.853 NotebookApp] Starting buffering for e44940aa-c876-46c2-8e7d-f69f8081bb33:598b49bde8644e98849bda2f63507bfa
+[W 16:29:53.728 NotebookApp] 404 GET /api/contents/plots?type=directory&_=1542403072515 (127.0.0.1): No such file or directory: plots
+[W 16:29:53.807 NotebookApp] No such file or directory: plots
+[W 16:29:53.808 NotebookApp] 404 GET /api/contents/plots?type=directory&_=1542403072515 (127.0.0.1) 84.92ms referer=http://localhost:8888/tree/plots
+[W 16:29:54.974 NotebookApp] 404 GET /api/contents/plots?type=directory&_=1542403072516 (127.0.0.1): No such file or directory: plots
+[W 16:29:54.975 NotebookApp] No such file or directory: plots
+[W 16:29:54.977 NotebookApp] 404 GET /api/contents/plots?type=directory&_=1542403072516 (127.0.0.1) 6.32ms referer=http://localhost:8888/tree/plots
+[W 10:24:15.749 NotebookApp] 403 GET /files/metaplots/mm10 (127.0.0.1): metaplots/mm10 is not a file
+[W 10:24:16.376 NotebookApp] 403 GET /files/metaplots/mm10 (127.0.0.1) 629.29ms referer=None
+[I 10:24:21.996 NotebookApp] 302 GET / (127.0.0.1) 0.97ms
