@@ -26,7 +26,7 @@ sensitivity = length(true_positives) / length(positives)
 specificity = length(true_negatives) / length(negatives)
 precision = length(true_positives) / length(ribotaper_positives)
 recall = length(true_positives) / length(positives)
-fscore = 2 * sensitivity * precision / (sensitivity + precision)
+fscore = 2 * recall * precision / (recall + precision)
 res.ribotaper = data.frame(ribotaper=c(sensitivity, specificity, fscore,
                                        precision, recall))
 # ORFscore results
@@ -38,7 +38,7 @@ sensitivity = length(true_positives) / length(positives)
 specificity = length(true_negatives) / length(negatives)
 precision = length(true_positives) / length(ORFscore_positives)
 recall = length(true_positives) / length(positives)
-fscore = 2 * sensitivity * precision / (sensitivity + precision)
+fscore = 2 * recall * precision / (recall + precision)
 res.ORFscore = data.frame(ORFscore=c(sensitivity, specificity, fscore,
                                        precision, recall))
 # ribocode results
@@ -50,7 +50,7 @@ sensitivity = length(true_positives) / length(positives)
 specificity = length(true_negatives) / length(negatives)
 precision = length(true_positives) / length(ribocode_positives)
 recall = length(true_positives) / length(positives)
-fscore = 2 * sensitivity * precision / (sensitivity + precision)
+fscore = 2 * recall * precision / (recall + precision)
 res.ribocode = data.frame(ribocode=c(sensitivity, specificity, fscore,
                                        precision, recall))
 # ribocop results
@@ -62,7 +62,7 @@ sensitivity = length(true_positives) / length(positives)
 specificity = length(true_negatives) / length(negatives)
 precision = length(true_positives) / length(ribocop_positives)
 recall = length(true_positives) / length(positives)
-fscore = 2 * sensitivity * precision / (sensitivity + precision)
+fscore = 2 * recall * precision / (recall + precision)
 res.ribocop = data.frame(ribocop=c(sensitivity, specificity, fscore,
                                        precision, recall))
 res = cbind(res.ribotaper, res.ORFscore, res.ribocode, res.ribocop)
