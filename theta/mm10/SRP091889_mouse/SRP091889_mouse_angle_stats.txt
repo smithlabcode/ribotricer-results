@@ -1,0 +1,8 @@
+total_rna_reads: 27214802
+total_rna_ccds_length: 20138292
+total_ribo_reads: 18857651
+total_ribo_ccds_length: 20138292
+mean reads: 1.3513957390229518
+rna zero vectors: 2334156
+poisson zero vectors: 116058
+ribo zero vectors: 4059335
