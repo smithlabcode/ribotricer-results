@@ -1,5 +1,5 @@
-options(echo = TRUE)
-args = commandArgs(trailingOnly = TRUE)
+# options(echo = TRUE)
+# args = commandArgs(trailingOnly = TRUE)
 # defualt 0.05
 # ribotaper_cutoff = args[1]
 ribotaper_cutoff = 0.05
@@ -9,9 +9,9 @@ ORFscore_cutoff = 6.044
 # default 0.05
 # ribocode_cutoff = args[3]
 ribocode_cutoff = 0.05
-#default 0.4
-ribocop_cutoff = as.double(args[1])
-# ribocop_cutoff = 0.40528
+#default 0.428571428571
+# ribocop_cutoff = as.double(args[1])
+ribocop_cutoff = 0.428571428571
 
 # ground truth
 data <- read.table("ROC_input.txt",header=TRUE,row.names=1)
