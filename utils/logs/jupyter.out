@@ -1,0 +1,14 @@
+---------- Begin SLURM Prolog ----------
+Job ID:        2351361
+Username:      wenzhenl
+Accountname:   lc_as
+Name:          jupyterscript.job
+Partition:     cmb
+Nodelist:      hpc3493
+TasksPerNode:  16
+CPUsPerTask:   Default[1]
+TMPDIR:        /tmp/2351361.cmb
+SCRATCHDIR:    /staging/scratch/2351361
+Cluster:       uschpc
+HSDA Account:  false
+---------- 2018-12-06 13:47:53 ---------
