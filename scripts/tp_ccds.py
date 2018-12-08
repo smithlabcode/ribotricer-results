@@ -66,12 +66,11 @@ with open(ccds_file, 'r') as orf:
                 header = False
                 continue
             #chromosome	nc_accession	gene	gene_id	ccds_id	ccds_status	cds_strand	cds_from	cds_to	cds_locations	match_type
-            chrom, _, _, _, _, _, strand, _, _, locations, _ = line.split('\t')
-            chrom = 'chr' + chrom
-            try:
-                locations = [list(map(int, x.strip().split('-'))) for x in locations.strip()[1:-1].split(', ')]
-            except:
+            chrom, _, _, _, _, status, strand, _, _, locations, _ = line.split('\t')
+            if status != 'Public':
                 continue
+            chrom = 'chr' + chrom
+            locations = [list(map(int, x.strip().split('-'))) for x in locations.strip()[1:-1].split(', ')]
             valid = True
             rna_reads = 0
             gene_ids = set()
