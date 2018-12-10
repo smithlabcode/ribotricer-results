@@ -1,0 +1,98 @@
+# This example file lists all possible options for the prepare-genome program.
+
+# INPUT FILES, REQUIRED
+
+# N.B. The input files DO NOT need to reside in the same directory. As long
+# as they are accessible from the calling context, they do not even need
+# to reside on the same partition.
+
+# the full path to the GTF file which contains the exon and CDS annotations
+gtf: /home/cmb-panasas2/skchoudh/genomes/mm10/annotation/gencode.vM11.annotation.gtf
+
+# the fasta file which contains the genome. The genomic identifiers in the GTF and
+# fasta files must match (e.g., "I" and "I", or "chrI" and "chrI", but not "I" and "chrI")
+fasta: /home/cmb-panasas2/skchoudh/genomes/mm10/fasta/mm10.fa
+
+# the fasta file containing the rRNA sequences. The file can also contain other
+# sequences which should be filtered, such as tRNA or snoRNAs.
+ribosomal_fasta: /home/cmb-panasas2/skchoudh/genomes/mm10/fasta/mm10_rRNA_mm10_tRNA.fa
+
+# OUTPUT FILES, REQUIRED
+
+# N.B. The output file locations DO NOT need to be the same directory as the
+# input files. Again, as long as the locations are writeable from the calling
+# context, they do not even need to be on the same partition.
+
+# base location for the created index files
+genome_base_path: /home/cmb-panasas2/skchoudh/genomes/mm10/rpbp_index_mrna
+
+# an identifier which will be used in the filenames. This should not contain
+# spaces, forward slashes, or other special characters
+genome_name: mm10
+
+# the base location for the Bowtie2 index for the ribosomal sequences
+ribosomal_index: /home/cmb-panasas2/skchoudh/genomes/mm10/rpbp_index_rrna
+
+# the base location for the STAR genome index
+star_index: /home/cmb-panasas2/skchoudh/genomes/mm10/rpbp_star_index
+# OTHER OPTIONS, OPTIONAL
+
+# an identifier that will be included in the name of the BED file containing
+# the orfs. This should not contain spaces, forward slashes, or special characters.
+orf_note: atg-only
+
+# a list of codons which will be treated as "starts" when searching for ORFs. Only
+# 'A', 'C', 'G', 'T' are supported. In particular, 'N's and other parts of the
+# "extended" DNA alphabet are not supported.
+
+# This must be a list of strings
+start_codons: [ATG]
+
+# a list of codons which will be treated as "stops" when searching for ORFs. Only
+# 'A', 'C', 'G', 'T' are supported. In particular, 'N's and other parts of the
+# "extended" DNA alphabet are not supported.
+
+# This must be a list of strings
+stop_codons: [TAA, TGA, TAG]
+
+# the value to use for the splice junction overlaps when constructing the STAR
+# index.
+sjdb_overhang: 50
+
+# whether to continue processing ORFs after encountering an error when parsing
+# transcript headers. By default, if the ORF extraction program encounters a
+# problem with the formatting of the transcript fasta file created by gffread,
+# it will quit. Parsing errors could also stem from problems in the original
+# GTF file. If this key is in the config file with any value, then transcript 
+# headers which do not parse correctly will be skipped. A warning is printed 
+# for each header skipped in this manner.
+
+# Comment this line out to quit after encountering a parsing error.
+ignore_parsing_errors: yes
+
+# NOVEL ANNOTATIONS OPTIONS, OPTIONAL
+
+# As a part of ORF extraction, the ORFs are assigned a label based on their 
+# position relative to annotated CDS regions; part of the labeling process 
+# considers the transcript identifiers. 
+
+# This option is a regular expression for the identifiers of novel ORFs 
+# (e.g., those from transcripts assembled using StringTie or Cufflinks). 
+# ORFs are annotated as novel if their id's match this expression and they 
+# would otherwise be annotated as 'noncoding' or 'suspect_overlap'. If no 
+# expression is given, no ORFs are annotated as novel.
+
+# The regular expression should match the "transcript_id" of assembled
+# transcripts in the GTF file.
+
+# N.B. Even if the transcript id of an ORF matches the regular expression, if
+# it would be labeled as 'canonical' or similar, it will still be labeled with
+# the original label.
+
+# A typical use-case is to first assemble transcripts from RNA-seq using,
+# for example, StringTie. Ultimately, this creates a GTF file. This GTF file
+# can then be concatenated with the GTF file from Ensembl, etc. That concatenated
+# GTF file should then be used as the input for Rp-Bp.
+novel_id_re: '"TCONS.*"'
+
+

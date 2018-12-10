@@ -1,0 +1,10 @@
+name: riboorf
+channels:
+  - conda-forge
+  - bioconda
+  - r
+  - defaults
+dependencies:
+  - libgcc-ng=7.2.0=hdf63c60_3
+  - perl=5.26.2=h470a237_0
+prefix: /home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/riboorf
