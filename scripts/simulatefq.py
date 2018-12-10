@@ -13,13 +13,20 @@ rna = sys.argv[1]
 lengths = sys.argv[2]
 prefix = sys.argv[3]
 
+COMPLETE = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C', 'N': 'N'}
+def reverse_complement(sequence):
+    return ''.join(COMPLETE[x] for x in sequence[::-1])
+
 to_write = ''
 read_lengths = [int(x) for x in lengths.split(',')]
 bam = pysam.AlignmentFile(rna, 'rb')
 for r in bam.fetch(until_eof=True):
-    seq = r.query_sequence
-    qual = ''.join([chr(x) for x in r.query_qualities])
+    seq = r.seq
+    qual = r.qual
     name = r.query_name
+    if r.is_reverse:
+        seq = reverse_complement(seq[::-1])
+        qual = qual[::-1]
     if r.query_length in read_lengths:
         pass
     elif r.query_length < min(read_lengths):
