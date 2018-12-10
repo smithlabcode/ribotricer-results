@@ -1,0 +1,423 @@
+INFO     riboutils.estimate_metagene_profile_bayes_factors 2018-12-10 10:25:17,173 : Estimating Bayes factors for lengths: 28,30
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/_parallel_backends.py", line 350, in __call__
+    return self.func(*args, **kwargs)
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py", line 131, in __call__
+    return [func(*args, **kwargs) for func, args, kwargs in self.items]
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py", line 131, in <listcomp>
+    return [func(*args, **kwargs) for func, args, kwargs in self.items]
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py", line 114, in estimate_profile_bayes_factors
+    iterations=args.iterations,chains=args.chains,seed=args.seed)
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py", line 63, in estimate_marginal_likelihoods
+    for pm in periodic_models]
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py", line 63, in <listcomp>
+    for pm in periodic_models]
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/pystan/model.py", line 671, in sampling
+    fit = self.fit_class(data)
+AttributeError: 'StanModel' object has no attribute 'fit_class'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/_parallel_backends.py", line 359, in __call__
+    raise TransportableException(text, e_type)
+joblib.my_exceptions.TransportableException: TransportableException
+___________________________________________________________________________
+AttributeError                                     Mon Dec 10 10:25:18 2018
+PID: 60894Python 3.5.5: /home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/bin/python
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py in __call__(self=<joblib.parallel.BatchedCalls object>)
+    126     def __init__(self, iterator_slice):
+    127         self.items = list(iterator_slice)
+    128         self._size = len(self.items)
+    129 
+    130     def __call__(self):
+--> 131         return [func(*args, **kwargs) for func, args, kwargs in self.items]
+        self.items = [(<function estimate_profile_bayes_factors>, (     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type')), {})]
+    132 
+    133     def __len__(self):
+    134         return self._size
+    135 
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py in <listcomp>(.0=<list_iterator object>)
+    126     def __init__(self, iterator_slice):
+    127         self.items = list(iterator_slice)
+    128         self._size = len(self.items)
+    129 
+    130     def __call__(self):
+--> 131         return [func(*args, **kwargs) for func, args, kwargs in self.items]
+        func = <function estimate_profile_bayes_factors>
+        args = (     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type'))
+        kwargs = {}
+    132 
+    133     def __len__(self):
+    134         return self._size
+    135 
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in estimate_profile_bayes_factors(profile=     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], args=Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type'))
+    109 
+    110         # pull out the signal for this offset
+    111         signal = start_counts[i:i+args.metagene_profile_length]
+    112         (bft_periodic, bft_nonperiodic) = estimate_marginal_likelihoods(signal, 
+    113             periodic_models, nonperiodic_models, 
+--> 114             iterations=args.iterations,chains=args.chains,seed=args.seed)
+        args.iterations = 500
+        args.chains = 2
+        args.seed = 8675309
+    115     
+    116         # extract the parameters of interest
+    117         m_periodic_ex = [m.extract(pars=['lp__']) for m in bft_periodic]
+    118         m_nonperiodic_ex = [m.extract(pars=['lp__']) for m in bft_nonperiodic]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in estimate_marginal_likelihoods(signal=array([ 1146,  1161,  1909,  1147,  1220,  2259,... 1582,  1837,  7557,
+        1774,  1470,  8369]), periodic_models=[<pystan.model.StanModel object>], nonperiodic_models=[<pystan.model.StanModel object>, <pystan.model.StanModel object>, <pystan.model.StanModel object>], iterations=500, chains=2, seed=8675309)
+     58     }
+     59 
+     60     # get the likelihood for each of the models 
+     61     bft_periodic = [
+     62         pm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+---> 63             for pm in periodic_models]
+        periodic_models = [<pystan.model.StanModel object>]
+     64 
+     65     bft_nonperiodic = [
+     66         nm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+     67             for nm in nonperiodic_models]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in <listcomp>(.0=<list_iterator object>)
+     58     }
+     59 
+     60     # get the likelihood for each of the models 
+     61     bft_periodic = [
+     62         pm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+---> 63             for pm in periodic_models]
+        pm = <pystan.model.StanModel object>
+     64 
+     65     bft_nonperiodic = [
+     66         nm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+     67             for nm in nonperiodic_models]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/pystan/model.py in sampling(self=<pystan.model.StanModel object>, data={'T': 7, 'very_high_prior_location': 15990, 'x_1': array([1146, 1147, 1478, 2213, 1492, 1582, 1774]), 'x_2': array([1161, 1220, 4054, 2163, 1687, 1837, 1470]), 'x_3': array([ 1909,  2259, 15990,  6272,  4886,  7557,  8369])}, pars=None, chains=2, iter=500, warmup=250, thin=1, seed=8675309, init='random', sample_file=None, diagnostic_file=None, verbose=False, algorithm='NUTS', control=None, n_jobs=1, **kwargs={'refresh': -1})
+    666         algorithms = ("NUTS", "HMC", "Fixed_param")  # , "Metropolis")
+    667         algorithm = "NUTS" if algorithm is None else algorithm
+    668         if algorithm not in algorithms:
+    669             raise ValueError("Algorithm must be one of {}".format(algorithms))
+    670 
+--> 671         fit = self.fit_class(data)
+        fit = undefined
+        self.fit_class = undefined
+        data = {'T': 7, 'very_high_prior_location': 15990, 'x_1': array([1146, 1147, 1478, 2213, 1492, 1582, 1774]), 'x_2': array([1161, 1220, 4054, 2163, 1687, 1837, 1470]), 'x_3': array([ 1909,  2259, 15990,  6272,  4886,  7557,  8369])}
+    672 
+    673         m_pars = fit._get_param_names()
+    674         p_dims = fit._get_param_dims()
+    675 
+
+AttributeError: 'StanModel' object has no attribute 'fit_class'
+___________________________________________________________________________
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py", line 699, in retrieve
+    self._output.extend(job.get(timeout=self.timeout))
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/multiprocessing/pool.py", line 644, in get
+    raise self._value
+joblib.my_exceptions.TransportableException: TransportableException
+___________________________________________________________________________
+AttributeError                                     Mon Dec 10 10:25:18 2018
+PID: 60894Python 3.5.5: /home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/bin/python
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py in __call__(self=<joblib.parallel.BatchedCalls object>)
+    126     def __init__(self, iterator_slice):
+    127         self.items = list(iterator_slice)
+    128         self._size = len(self.items)
+    129 
+    130     def __call__(self):
+--> 131         return [func(*args, **kwargs) for func, args, kwargs in self.items]
+        self.items = [(<function estimate_profile_bayes_factors>, (     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type')), {})]
+    132 
+    133     def __len__(self):
+    134         return self._size
+    135 
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py in <listcomp>(.0=<list_iterator object>)
+    126     def __init__(self, iterator_slice):
+    127         self.items = list(iterator_slice)
+    128         self._size = len(self.items)
+    129 
+    130     def __call__(self):
+--> 131         return [func(*args, **kwargs) for func, args, kwargs in self.items]
+        func = <function estimate_profile_bayes_factors>
+        args = (     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type'))
+        kwargs = {}
+    132 
+    133     def __len__(self):
+    134         return self._size
+    135 
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in estimate_profile_bayes_factors(profile=     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], args=Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type'))
+    109 
+    110         # pull out the signal for this offset
+    111         signal = start_counts[i:i+args.metagene_profile_length]
+    112         (bft_periodic, bft_nonperiodic) = estimate_marginal_likelihoods(signal, 
+    113             periodic_models, nonperiodic_models, 
+--> 114             iterations=args.iterations,chains=args.chains,seed=args.seed)
+        args.iterations = 500
+        args.chains = 2
+        args.seed = 8675309
+    115     
+    116         # extract the parameters of interest
+    117         m_periodic_ex = [m.extract(pars=['lp__']) for m in bft_periodic]
+    118         m_nonperiodic_ex = [m.extract(pars=['lp__']) for m in bft_nonperiodic]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in estimate_marginal_likelihoods(signal=array([ 1146,  1161,  1909,  1147,  1220,  2259,... 1582,  1837,  7557,
+        1774,  1470,  8369]), periodic_models=[<pystan.model.StanModel object>], nonperiodic_models=[<pystan.model.StanModel object>, <pystan.model.StanModel object>, <pystan.model.StanModel object>], iterations=500, chains=2, seed=8675309)
+     58     }
+     59 
+     60     # get the likelihood for each of the models 
+     61     bft_periodic = [
+     62         pm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+---> 63             for pm in periodic_models]
+        periodic_models = [<pystan.model.StanModel object>]
+     64 
+     65     bft_nonperiodic = [
+     66         nm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+     67             for nm in nonperiodic_models]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in <listcomp>(.0=<list_iterator object>)
+     58     }
+     59 
+     60     # get the likelihood for each of the models 
+     61     bft_periodic = [
+     62         pm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+---> 63             for pm in periodic_models]
+        pm = <pystan.model.StanModel object>
+     64 
+     65     bft_nonperiodic = [
+     66         nm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+     67             for nm in nonperiodic_models]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/pystan/model.py in sampling(self=<pystan.model.StanModel object>, data={'T': 7, 'very_high_prior_location': 15990, 'x_1': array([1146, 1147, 1478, 2213, 1492, 1582, 1774]), 'x_2': array([1161, 1220, 4054, 2163, 1687, 1837, 1470]), 'x_3': array([ 1909,  2259, 15990,  6272,  4886,  7557,  8369])}, pars=None, chains=2, iter=500, warmup=250, thin=1, seed=8675309, init='random', sample_file=None, diagnostic_file=None, verbose=False, algorithm='NUTS', control=None, n_jobs=1, **kwargs={'refresh': -1})
+    666         algorithms = ("NUTS", "HMC", "Fixed_param")  # , "Metropolis")
+    667         algorithm = "NUTS" if algorithm is None else algorithm
+    668         if algorithm not in algorithms:
+    669             raise ValueError("Algorithm must be one of {}".format(algorithms))
+    670 
+--> 671         fit = self.fit_class(data)
+        fit = undefined
+        self.fit_class = undefined
+        data = {'T': 7, 'very_high_prior_location': 15990, 'x_1': array([1146, 1147, 1478, 2213, 1492, 1582, 1774]), 'x_2': array([1161, 1220, 4054, 2163, 1687, 1837, 1470]), 'x_3': array([ 1909,  2259, 15990,  6272,  4886,  7557,  8369])}
+    672 
+    673         m_pars = fit._get_param_names()
+    674         p_dims = fit._get_param_dims()
+    675 
+
+AttributeError: 'StanModel' object has no attribute 'fit_class'
+___________________________________________________________________________
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/bin/estimate-metagene-profile-bayes-factors", line 11, in <module>
+    sys.exit(main())
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py", line 222, in main
+    progress_bar=True
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/misc/parallel.py", line 101, in apply_parallel_groups
+    for name,group in tqdm.tqdm(groups, total=len(groups), leave=True, file=sys.stdout))
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py", line 789, in __call__
+    self.retrieve()
+  File "/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py", line 740, in retrieve
+    raise exception
+joblib.my_exceptions.JoblibAttributeError: JoblibAttributeError
+___________________________________________________________________________
+Multiprocessing exception:
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/bin/estimate-metagene-profile-bayes-factors in <module>()
+      6 
+      7 from riboutils.estimate_metagene_profile_bayes_factors import main
+      8 
+      9 if __name__ == '__main__':
+     10     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+---> 11     sys.exit(main())
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in main()
+    217         all_profile_estimates_df = parallel.apply_parallel_groups(
+    218                 length_groups,
+    219                 args.num_cpus,
+    220                 estimate_profile_bayes_factors,
+    221                 args,
+--> 222                 progress_bar=True
+    223         )
+    224 
+    225     msg = "Combining estimates into one data frame"
+    226     logger.info(msg)
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/misc/parallel.py in apply_parallel_groups(groups=<pandas.core.groupby.DataFrameGroupBy object>, num_procs=6, func=<function estimate_profile_bayes_factors>, progress_bar=True, *args=(Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type'),))
+     96         return []
+     97 
+     98     if progress_bar:
+     99         import tqdm
+    100         ret_list = joblib.Parallel(n_jobs=num_procs)(joblib.delayed(func)(group, *args) 
+--> 101             for name,group in tqdm.tqdm(groups, total=len(groups), leave=True, file=sys.stdout))
+        tqdm.tqdm = <class 'tqdm._tqdm.tqdm'>
+        groups = <pandas.core.groupby.DataFrameGroupBy object>
+    102     else:
+    103         ret_list = joblib.Parallel(n_jobs=num_procs)(joblib.delayed(func)(group, *args) 
+    104             for name, group in groups)
+    105     return ret_list
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py in __call__(self=Parallel(n_jobs=6), iterable=<generator object apply_parallel_groups.<locals>.<genexpr>>)
+    784             if pre_dispatch == "all" or n_jobs == 1:
+    785                 # The iterable was consumed all at once by the above for loop.
+    786                 # No need to wait for async callbacks to trigger to
+    787                 # consumption.
+    788                 self._iterating = False
+--> 789             self.retrieve()
+        self.retrieve = <bound method Parallel.retrieve of Parallel(n_jobs=6)>
+    790             # Make sure that we get a last message telling us we are done
+    791             elapsed_time = time.time() - self._start_time
+    792             self._print('Done %3i out of %3i | elapsed: %s finished',
+    793                         (len(self._output), len(self._output),
+
+---------------------------------------------------------------------------
+Sub-process traceback:
+---------------------------------------------------------------------------
+AttributeError                                     Mon Dec 10 10:25:18 2018
+PID: 60894Python 3.5.5: /home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/bin/python
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py in __call__(self=<joblib.parallel.BatchedCalls object>)
+    126     def __init__(self, iterator_slice):
+    127         self.items = list(iterator_slice)
+    128         self._size = len(self.items)
+    129 
+    130     def __call__(self):
+--> 131         return [func(*args, **kwargs) for func, args, kwargs in self.items]
+        self.items = [(<function estimate_profile_bayes_factors>, (     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type')), {})]
+    132 
+    133     def __len__(self):
+    134         return self._size
+    135 
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/joblib/parallel.py in <listcomp>(.0=<list_iterator object>)
+    126     def __init__(self, iterator_slice):
+    127         self.items = list(iterator_slice)
+    128         self._size = len(self.items)
+    129 
+    130     def __call__(self):
+--> 131         return [func(*args, **kwargs) for func, args, kwargs in self.items]
+        func = <function estimate_profile_bayes_factors>
+        args = (     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type'))
+        kwargs = {}
+    132 
+    133     def __len__(self):
+    134         return self._size
+    135 
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in estimate_profile_bayes_factors(profile=     position  count   type  length
+0         -5... 20   1312    end      28
+
+[142 rows x 4 columns], args=Namespace(chains=2, count_field='count', file_lo...stdout_logging_level='NOTSET', type_field='type'))
+    109 
+    110         # pull out the signal for this offset
+    111         signal = start_counts[i:i+args.metagene_profile_length]
+    112         (bft_periodic, bft_nonperiodic) = estimate_marginal_likelihoods(signal, 
+    113             periodic_models, nonperiodic_models, 
+--> 114             iterations=args.iterations,chains=args.chains,seed=args.seed)
+        args.iterations = 500
+        args.chains = 2
+        args.seed = 8675309
+    115     
+    116         # extract the parameters of interest
+    117         m_periodic_ex = [m.extract(pars=['lp__']) for m in bft_periodic]
+    118         m_nonperiodic_ex = [m.extract(pars=['lp__']) for m in bft_nonperiodic]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in estimate_marginal_likelihoods(signal=array([ 1146,  1161,  1909,  1147,  1220,  2259,... 1582,  1837,  7557,
+        1774,  1470,  8369]), periodic_models=[<pystan.model.StanModel object>], nonperiodic_models=[<pystan.model.StanModel object>, <pystan.model.StanModel object>, <pystan.model.StanModel object>], iterations=500, chains=2, seed=8675309)
+     58     }
+     59 
+     60     # get the likelihood for each of the models 
+     61     bft_periodic = [
+     62         pm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+---> 63             for pm in periodic_models]
+        periodic_models = [<pystan.model.StanModel object>]
+     64 
+     65     bft_nonperiodic = [
+     66         nm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+     67             for nm in nonperiodic_models]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/riboutils/estimate_metagene_profile_bayes_factors.py in <listcomp>(.0=<list_iterator object>)
+     58     }
+     59 
+     60     # get the likelihood for each of the models 
+     61     bft_periodic = [
+     62         pm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+---> 63             for pm in periodic_models]
+        pm = <pystan.model.StanModel object>
+     64 
+     65     bft_nonperiodic = [
+     66         nm.sampling(data=data, iter=iterations, chains=chains, n_jobs=1, seed=seed, refresh=-1)
+     67             for nm in nonperiodic_models]
+
+...........................................................................
+/home/cmb-panasas2/skchoudh/software_frozen/anaconda27/envs/rpbp_v2/lib/python3.5/site-packages/pystan/model.py in sampling(self=<pystan.model.StanModel object>, data={'T': 7, 'very_high_prior_location': 15990, 'x_1': array([1146, 1147, 1478, 2213, 1492, 1582, 1774]), 'x_2': array([1161, 1220, 4054, 2163, 1687, 1837, 1470]), 'x_3': array([ 1909,  2259, 15990,  6272,  4886,  7557,  8369])}, pars=None, chains=2, iter=500, warmup=250, thin=1, seed=8675309, init='random', sample_file=None, diagnostic_file=None, verbose=False, algorithm='NUTS', control=None, n_jobs=1, **kwargs={'refresh': -1})
+    666         algorithms = ("NUTS", "HMC", "Fixed_param")  # , "Metropolis")
+    667         algorithm = "NUTS" if algorithm is None else algorithm
+    668         if algorithm not in algorithms:
+    669             raise ValueError("Algorithm must be one of {}".format(algorithms))
+    670 
+--> 671         fit = self.fit_class(data)
+        fit = undefined
+        self.fit_class = undefined
+        data = {'T': 7, 'very_high_prior_location': 15990, 'x_1': array([1146, 1147, 1478, 2213, 1492, 1582, 1774]), 'x_2': array([1161, 1220, 4054, 2163, 1687, 1837, 1470]), 'x_3': array([ 1909,  2259, 15990,  6272,  4886,  7557,  8369])}
+    672 
+    673         m_pars = fit._get_param_names()
+    674         p_dims = fit._get_param_dims()
+    675 
+
+AttributeError: 'StanModel' object has no attribute 'fit_class'
+___________________________________________________________________________
