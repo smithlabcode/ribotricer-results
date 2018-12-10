@@ -19,8 +19,8 @@ STAR --runThreadN 16\
   --outFilterMatchNmin 16\
   --seedSearchStartLmax 15\
   --winAnchorMultimapNmax 200\
-  && samtools sort -@ 16 ${OUT_PREFIX}Aligned.out.bam -o ${OUT_BAM} \ 
-  && samtools index ${OUT_BAM} \
+  && samtools sort -@ 16 ${OUT_PREFIX}Aligned.out.bam -o ${OUT_BAM}\ 
+  && samtools index ${OUT_BAM}\
   && mv ${OUT_PREFIX}Log.final.out ${OUT_PREFIX}Log.out ${OUT_PREFIX}SJ.out.tab
 
 #samtools sort -@ 16 ${OUT_PREFIX}Aligned.out.bam -o ${OUT_BAM}
