@@ -1,0 +1,10 @@
+SRP010679_human hg38
+SRP029589_human hg38
+SRP063852_human hg38
+SRP098789_human hg38
+SRP102021_human hg38
+SRP003554_mouse mm10
+SRP062407_mouse mm10
+SRP078005_mouse mm10
+SRP091889_mouse mm10
+SRP115915_mouse mm10
