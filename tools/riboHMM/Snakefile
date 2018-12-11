@@ -1,0 +1,111 @@
+include: config['config_path']
+
+
+import os
+import errno
+
+def mkdir_p(path):
+  """Python version mkdir -p
+
+  Parameters
+  ----------
+
+  path : str
+  """
+  if path:
+    try:
+      os.makedirs(path) 
+    except OSError as exc:  # Python >2.5
+      if exc.errno == errno.EEXIST and os.path.isdir(path):
+        pass
+      else:
+        raise
+
+
+def get_wrapper(wrapper_name):
+  path = os.path.dirname(os.path.abspath(os.path.realpath(workflow.snakefile)))
+  return 'file://' + os.path.join(path, 'wrappers',  wrapper_name + '.py')
+
+mkdir_p(os.path.join(INPUT_DIR, 'slurm-logs'))
+RIBOHMM_SRC_DIR = '/home/cmb-panasas2/skchoudh/github_projects/riboHMM/'
+workdir: INPUT_DIR
+
+SAMPLE_TYPES = ['RIBO', 'RNA']
+
+rule all:
+  input:
+    expand(INPUT_DIR + '/{sample_type}_rev.{read_length}.gz.tbi', sample_type=SAMPLE_TYPES, read_length=READ_LENGTHS),
+    expand(SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    'riboHMM_out/learn_model.txt'
+
+
+rule bam_to_tbi:
+  input: INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
+  output: 
+    fwd = expand(INPUT_DIR + '/{{sample_type}}_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    rev = expand(INPUT_DIR + '/{{sample_type}}_rev.{read_length}.gz.tbi', read_length=READ_LENGTHS)
+  run:
+    if wildcards.sample_type == 'RIBO':
+      shell(r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype riboseq {input}''')
+    else:
+      shell(r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype rnaseq {input}''')
+      
+
+rule create_syn_footprints:
+  input:
+    gtf = ancient(GTF),
+    fasta = ancient(GENOME_FASTA),
+  output: expand('{synfootprints}_{read_length}.fq.gz', synfootprints=SYNFOOTPRINTS_PREFIX, read_length=READ_LENGTHS)
+  shell:
+    r'''python {RIBOHMM_SRC_DIR}/construct_synthetic_footprints.py --output_fastq_prefix {SYNFOOTPRINTS_PREFIX} {input.gtf} {input.fasta}'''
+
+
+rule map_star:
+  input:
+    R1 = SYNFOOTPRINTS_PREFIX+'_{read_length}.fq.gz',
+    index = ancient(STAR_INDEX)
+  output:
+    bam = SYNFOOTPRINTS_PREFIX + '_{read_length}.bam',
+    txbam = SYNFOOTPRINTS_PREFIX + '_{read_length}.tx.bam',
+    counts = SYNFOOTPRINTS_PREFIX + '_{read_length}.genecounts.tsv',
+    starlogs = SYNFOOTPRINTS_PREFIX + '_{read_length}Log.final.out'
+  params:
+    chrom_sizes = CHROM_SIZES,
+    intron_bed = INTRON_BED,
+    tmp_dir = '/tmp'
+  threads: 16
+  wrapper:
+    get_wrapper('star_wrapper')
+
+
+rule compute_mappability:
+  input: SYNFOOTPRINTS_PREFIX + '_{read_length}.bam',
+  output: SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi'
+  params:
+    prefix = SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}'
+  shell:
+    r'''python {RIBOHMM_SRC_DIR}/compute_mappability.py {input} {params.prefix}'''
+
+
+rule learn_model:
+  input:
+    rna_tbi = expand(INPUT_DIR + '/' + SAMPLE_TYPES[0] + '_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    ribo_tbi = expand(INPUT_DIR + '/' + SAMPLE_TYPES[1] + '_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    gtf = GTF,
+    fasta = GENOME_FASTA,
+    mappability_file = expand(SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi', read_length=READ_LENGTHS)
+  params:
+    rna_prefix = INPUT_DIR + SAMPLE_TYPES[0],
+    ribo_prefix = INPUT_DIR + SAMPLE_TYPES[1],
+    mappability_prefix = SYNFOOTPRINTS_PREFIX + '_mappability'
+  output: 
+    model = 'riboHMM_out/learn_model.txt',
+    log = 'riboHMM_out/log.txt'
+  shell:
+    r'''python {RIBOHMM_SRC_DIR}/learn_model.py --rnaseq_file {params.rna_prefix}\ 
+    --mappability_file {params.mappability_prefix}\
+    --log_file {output.log}\
+    --model_file {output.model}\
+    {input.fasta}\
+    {input.gtf}\
+    {params.ribo_prefix}'''
