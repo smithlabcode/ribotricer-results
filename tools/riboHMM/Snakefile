@@ -34,21 +34,26 @@ SAMPLE_TYPES = ['RIBO', 'RNA']
 
 rule all:
   input:
-    expand(INPUT_DIR + '/{sample_type}_rev.{read_length}.gz.tbi', sample_type=SAMPLE_TYPES, read_length=READ_LENGTHS),
+    INPUT_DIR + '/RNA_CCDS_lengths.gz.tbi',
+    expand(INPUT_DIR + '/RIBO_CCDS_lengths_rev.{read_length}.gz.tbi', read_length=READ_LENGTHS),
     expand(SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi', read_length=READ_LENGTHS),
     'riboHMM_out/learn_model.txt'
 
 
-rule bam_to_tbi:
-  input: INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
+rule bam_to_tbi_ribo:
+  input: INPUT_DIR + '/RIBO_CCDS_lengths.bam'
   output: 
-    fwd = expand(INPUT_DIR + '/{{sample_type}}_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
-    rev = expand(INPUT_DIR + '/{{sample_type}}_rev.{read_length}.gz.tbi', read_length=READ_LENGTHS)
-  run:
-    if wildcards.sample_type == 'RIBO':
-      shell(r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype riboseq {input}''')
-    else:
-      shell(r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype rnaseq {input}''')
+    fwd = expand(INPUT_DIR + '/RIBO_CCDS_lengths_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    rev = expand(INPUT_DIR + '/RIBO_CCDS_lengths_rev.{read_length}.gz.tbi', read_length=READ_LENGTHS)
+  shell:
+    r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype riboseq {input}'''
+      
+      
+rule bam_to_tbi_rna:
+  input: INPUT_DIR + '/RNA_CCDS_lengths.bam'
+  output: INPUT_DIR + '/RNA_CCDS_lengths.gz.tbi'
+  shell:
+    r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype rnaseq {input}'''
       
 
 rule create_syn_footprints:
@@ -89,8 +94,8 @@ rule compute_mappability:
 
 rule learn_model:
   input:
-    rna_tbi = expand(INPUT_DIR + '/' + SAMPLE_TYPES[0] + '_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
-    ribo_tbi = expand(INPUT_DIR + '/' + SAMPLE_TYPES[1] + '_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    rna_tbi = INPUT_DIR + '/RNA_CCDS_lengths.gz.tbi',
+    ribo_tbi = expand(INPUT_DIR + '/' + SAMPLE_TYPES[0] + '_CCDS_lengths_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
     gtf = GTF,
     fasta = GENOME_FASTA,
     mappability_file = expand(SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi', read_length=READ_LENGTHS)
