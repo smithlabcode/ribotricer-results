@@ -1,0 +1,59 @@
+import os
+import errno
+
+def mkdir_p(path):
+    """Python version mkdir -p
+
+    Parameters
+    ----------
+    path : string
+           Path to directory to create
+    """
+    if path:
+        try:
+            os.makedirs(path)
+        except OSError as exc:  # Python >2.5
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else:
+                raise
+
+
+include:
+    config['config_path']
+
+mkdir_p( os.path.join(INPUT_DIR, 'slurm-logs'))
+
+RIBORF_SRC_DIR = '/home/cmb-panasas2/skchoudh/github_projects/ribocop_tools_source/RibORF/RibORF.1.0/'
+
+workdir: INPUT_DIR
+
+rule all:
+  input:
+    expand('ribORF_results/orfs/{sample_type}/', sample_type=['RNA', 'RIBO'])
+
+rule bam_to_sam:
+  input: INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
+  output: 'ribORF_results/sam_original/{sample_type}_CCDS_lengths.sam'
+  shell:
+    r'''samtools view -h -o {output} {input}'''
+
+
+rule correct_offset:
+  input: 'ribORF_results/sam_original/{sample_type}_CCDS_lengths.sam'
+  output: 'ribORF_results/sam_offsetcorrected/{sample_type}_CCDS_lengths.sam'
+  params:
+    offset_file = OFFSET_FILE,
+    src_dir = RIBORF_SRC_DIR
+  shell:
+    r'''perl {params.src_dir}/offsetCorrect.pl -r {input} -p {params.offset_file} -o {output}'''
+
+
+rule run_ribORF:
+  input: 'ribORF_results/sam_offsetcorrected/{sample_type}_CCDS_lengths.sam'
+  output: 'ribORF_results/orfs/{sample_type}/'
+  params:
+    candidate_orfs = CANDIDATE_ORFS,
+    src_dir = RIBORF_SRC_DIR
+  shell:
+    r'''perl {params.src_dir}/ribORF.pl -f {input} -c {params.candidate_orfs} -o {output}'''
