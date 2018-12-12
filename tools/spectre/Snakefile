@@ -1,0 +1,63 @@
+import os
+import errno
+
+include: config['config_path']
+
+SPECTRE_SRC_DIR = '/home/cmb-panasas2/skchoudh/github_projects/ribocop_tools_source/spectre-1.0.0/'
+workdir: INPUT_DIR
+
+
+def mkdir_p(path):
+  """Python version mkdir -p
+
+  Parameters
+  ----------
+
+  path : str
+  """
+  if path:
+    try:
+      os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+      if exc.errno == errno.EEXIST and os.path.isdir(path):
+        pass
+      else:
+        raise
+
+
+mkdir_p(os.path.join(INPUT_DIR, 'slurm-logs'))
+SAMPLE_TYPES = ['RIBO', 'RNA']
+STRAND_TYPE = {}
+STRAND_TYPE['RIBO'] = RIBO_STRAND_CUFFLINKS
+STRAND_TYPE['RNA'] = RNA_STRAND_CUFFLINKS
+
+
+rule all:
+  input:
+    expand('spectre_results/{sample_type}/log.txt', sample_type=SAMPLE_TYPES)
+
+
+
+
+rule cufflinks:
+  input: INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
+  output: 'cufflinks_results/{sample_type}/isoforms.fpkm_tracking'
+  params:
+    prefix = 'cufflinks_results/{sample_type}'
+  threads: 16
+  run:
+    strand_type = STRAND_TYPE[wildcards.sample_type]
+    shell(r'''source activate spectre && cufflinks --output-dir {params.prefix} --num-threads {threads} --GTF {GTF} --library-type {strand_type} {input}''')
+
+
+rule run_spectre:
+  input: 
+    cufflinks = 'cufflinks_results/{sample_type}/isoforms.fpkm_tracking',
+    bam = INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
+  output: 
+    log = 'spectre_results/{sample_type}/log.txt',
+    out = 'spectre_results/{sample_type}/spectre_results.txt',
+  shell:
+    r'''source activate spectre && python {SPECTRE_SRC_DIR}/SPECtre.py --input {input.bam} --output {output.out} --log {output.log} --offsets {OFFSETS} --fpkm {input.cufflinks} --gtf {GTF} --orfscore --full --floss
+    '''
+

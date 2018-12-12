@@ -1,0 +1,5 @@
+INPUT_DIR = '/home/cmb-panasas2/skchoudh/benchmark/gene_level/hg38/SRP090415_human'
+GTF = '/home/cmb-panasas2/skchoudh/genomes/hg38/annotation/gencode.v25.annotation.gtf'
+RIBO_STRAND_CUFFLINKS = 'fr-secondstrand'
+RNA_STRAND_CUFFLINKS = 'fr-firststrand'
+OFFSETS = '"26:12,27:12,28:12,29:12,30:12"'

@@ -1,0 +1,5 @@
+INPUT_DIR = '/home/cmb-panasas2/skchoudh/benchmark/gene_level/mm10/SRP062407_mouse'
+GTF = '/home/cmb-panasas2/skchoudh/genomes/mm10/annotation/gencode.vM11.annotation.gtf'
+RIBO_STRAND_CUFFLINKS = 'fr-secondstrand'
+RNA_STRAND_CUFFLINKS = 'fr-secondstrand'
+OFFSETS = '"28:12,29:12,30:12,31:12"'
