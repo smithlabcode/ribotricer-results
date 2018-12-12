@@ -50,14 +50,15 @@ rule cufflinks:
     shell(r'''source activate spectre && cufflinks --output-dir {params.prefix} --num-threads {threads} --GTF {GTF} --library-type {strand_type} {input}''')
 
 
-rule run_spectre:
+rule spectre:
   input: 
     cufflinks = 'cufflinks_results/{sample_type}/isoforms.fpkm_tracking',
     bam = INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
   output: 
     log = 'spectre_results/{sample_type}/log.txt',
     out = 'spectre_results/{sample_type}/spectre_results.txt',
+  threads: 16
   shell:
-    r'''source activate spectre && python {SPECTRE_SRC_DIR}/SPECtre.py --input {input.bam} --output {output.out} --log {output.log} --offsets {OFFSETS} --fpkm {input.cufflinks} --gtf {GTF} --orfscore --full --floss
+    r'''source activate spectre && python {SPECTRE_SRC_DIR}/SPECtre.py --nt {threads} --input {input.bam} --output {output.out} --log {output.log} --offsets {OFFSETS} --fpkm {input.cufflinks} --gtf {GTF} --fdr 1 --orfscore --full --floss
     '''
 

@@ -9,3 +9,7 @@ __default__:
 cufflinks:
     mem: '40gb'
     cores: 16
+
+spectre:
+    mem: '40gb'
+    cores: 16

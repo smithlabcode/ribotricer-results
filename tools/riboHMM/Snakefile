@@ -60,9 +60,11 @@ rule create_syn_footprints:
   input:
     gtf = ancient(GTF),
     fasta = ancient(GENOME_FASTA),
-  output: expand('{synfootprints}_{read_length}.fq.gz', synfootprints=SYNFOOTPRINTS_PREFIX, read_length=READ_LENGTHS)
+  output: SYNFOOTPRINTS_PREFIX + '_{read_length}.fq.gz'
+  params:
+    read_length= '{read_length}'
   shell:
-    r'''python {RIBOHMM_SRC_DIR}/construct_synthetic_footprints.py --output_fastq_prefix {SYNFOOTPRINTS_PREFIX} {input.gtf} {input.fasta}'''
+    r'''python {RIBOHMM_SRC_DIR}/construct_synthetic_footprints.py --footprint_length {params.read_length} --output_fastq_prefix {SYNFOOTPRINTS_PREFIX} {input.gtf} {input.fasta}'''
 
 
 rule map_star:

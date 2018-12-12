@@ -1,6 +1,6 @@
 
 INPUT_DIR = '/home/cmb-panasas2/skchoudh/benchmark/gene_level/hg38/SRP102021_human'
-SYNFOOTPRINTS_PREFIX = '/staging/as/skchoudh/riboHMM_synthetic_footprints/hg38_synfootprints'
+SYNFOOTPRINTS_PREFIX = '/staging/as/skchoudh/riboHMM_synthetic_footprints/hg38/hg38_synfootprints'
 READ_LENGTHS = ['28', '29', '30', '31']
 INTRON_BED = '/home/cmb-panasas2/skchoudh/genomes/hg38/annotation/gencode.v25.gffutils.intron.bed'
 CHROM_SIZES = '/home/cmb-panasas2/skchoudh/genomes/hg38/fasta/hg38.chrom.sizes'
