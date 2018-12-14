@@ -55,6 +55,6 @@ rule run_ribORF:
   params:
     candidate_orfs = CANDIDATE_ORFS,
     src_dir = RIBORF_SRC_DIR,
-    outdir = 'ribocop_results/orfs/{sample_type}'
+    outdir = 'ribORF_results/orfs/{sample_type}'
   shell:
     r'''perl {params.src_dir}/ribORF.pl -f {input} -c {params.candidate_orfs} -o {params.outdir}'''

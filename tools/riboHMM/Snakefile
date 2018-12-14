@@ -102,17 +102,11 @@ rule learn_model:
     fasta = GENOME_FASTA,
     mappability_file = expand(SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi', read_length=READ_LENGTHS)
   params:
-    rna_prefix = INPUT_DIR + SAMPLE_TYPES[0],
-    ribo_prefix = INPUT_DIR + SAMPLE_TYPES[1],
+    rna_prefix = INPUT_DIR + '/RNA_CCDS_lengths',
+    ribo_prefix = INPUT_DIR + '/RIBO_CCDS_lengths',
     mappability_prefix = SYNFOOTPRINTS_PREFIX + '_mappability'
   output: 
     model = 'riboHMM_out/learn_model.txt',
     log = 'riboHMM_out/log.txt'
   shell:
-    r'''python {RIBOHMM_SRC_DIR}/learn_model.py --rnaseq_file {params.rna_prefix}\ 
-    --mappability_file {params.mappability_prefix}\
-    --log_file {output.log}\
-    --model_file {output.model}\
-    {input.fasta}\
-    {input.gtf}\
-    {params.ribo_prefix}'''
+    r'''python {RIBOHMM_SRC_DIR}/learn_model.py --rnaseq_file {params.rna_prefix} --mappability_file {params.mappability_prefix} --log_file {output.log} --model_file {output.model} {input.fasta} {input.gtf} {params.ribo_prefix}'''

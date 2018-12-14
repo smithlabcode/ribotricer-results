@@ -42,6 +42,7 @@ rule all:
 rule cufflinks:
   input: INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
   output: 'cufflinks_results/{sample_type}/isoforms.fpkm_tracking'
+  benchmark: 'benchmarks/spectre/cufflinks_{sample_type}.txt'
   params:
     prefix = 'cufflinks_results/{sample_type}'
   threads: 16
@@ -54,6 +55,7 @@ rule spectre:
   input: 
     cufflinks = 'cufflinks_results/{sample_type}/isoforms.fpkm_tracking',
     bam = INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
+  benchmark: 'benchmarks/spectre/spectre_{sample_type}.txt'
   output: 
     log = 'spectre_results/{sample_type}/log.txt',
     out = 'spectre_results/{sample_type}/spectre_results.txt',

@@ -11,5 +11,5 @@ cufflinks:
     cores: 16
 
 spectre:
-    mem: '40gb'
+    mem: '20gb'
     cores: 16

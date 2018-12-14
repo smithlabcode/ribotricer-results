@@ -58,7 +58,5 @@ with tempfile.TemporaryDirectory(dir=snakemake.params.tmp_dir) as temp_dir:
                 && samtools sort -@ {snakemake.threads} {OUT_PREFIX}Aligned.out.bam -o {snakemake.output.bam} -T {temp_dir}/{TMP_DIR_SAMPLE}_sort\
                 && mv {OUT_PREFIX}Aligned.toTranscriptome.out.bam {snakemake.output.txbam}\
                 && samtools index {snakemake.output.bam}\
-                && mv {OUT_PREFIX}ReadsPerGene.out.tab {snakemake.output.counts}\
-                && mv {OUT_PREFIX}Log.final.out {OUT_PREFIX}Log.out {OUT_PREFIX}SJ.out.tab\
-                {OUT_PREFIX}Log.progress.out {STAR_LOGS_DIR}
+                && mv {OUT_PREFIX}ReadsPerGene.out.tab {snakemake.output.counts}
             ''')
