@@ -12,3 +12,9 @@ tools which only work at gene or transcript level detection, including ORF-Rater
 RiboHMM, and RP-BP, we performed the comparison in a second round. 
 
 We downloaded and installed each tool by following the instruction at the following pages:
+* [ORF-RATER](https://github.com/alexfields/ORF-RATER)
+* [RibORF](https://github.com/zhejilab/RibORF) (version 1.0)
+* [RiboTaper](https://ohlerlab.mdc-berlin.de/software/RiboTaper_126/) (version 1.3)
+* [RiboHMM](https://github.com/rajanil/riboHMM)
+* [RP-BP](https://github.com/dieterich-lab/rp-bp) (version 1.1.12)
+* [RiboCode](https://github.com/xryanglab/RiboCode) (version 1.2.10)
