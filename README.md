@@ -29,7 +29,11 @@ We downloaded and installed each tool by following the instruction at the follow
 * [RP-BP](https://github.com/dieterich-lab/rp-bp) (version 1.1.12)
 * [RiboCode](https://github.com/xryanglab/RiboCode) (version 1.2.10)
 
+### Data preprocessing and mapping
+blabla
+
 ### Exon level benchmarking
+blabla
 
 ### Gene level benchmarking
 For the gene level comparison, we again use the profiles of expressed CCDS genes from Ribo-seq
