@@ -28,3 +28,19 @@ We downloaded and installed each tool by following the instruction at the follow
 * [RiboHMM](https://github.com/rajanil/riboHMM)
 * [RP-BP](https://github.com/dieterich-lab/rp-bp) (version 1.1.12)
 * [RiboCode](https://github.com/xryanglab/RiboCode) (version 1.2.10)
+
+### Exon level benchmarking
+
+### Gene level benchmarking
+For the gene level comparison, we again use the profiles of expressed CCDS genes from Ribo-seq
+dta as true positives and those from RNA-seq data as true negatives. In order to have a fair
+comparison, the bam files mapped with ```STAT``` are intersected with the CCDS bed file so that
+only the reads originating from CCDS regions are used. This step is done with ```bedtools intersect```
+command. After the intersection, the Ribo-seq reads are further filtered to only include reads with
+read length shown to be periodic at metagene plots. The read lengths used here for each Ribo-seq data
+are the same as those used for exon level benchmarking. For the RNA-seq data, after the intersection,
+we randomly trimmed each reads from either end to make the read lengths to be between 28 and 30 which is
+the typical read length range for Ribo-seq data. This process is achieved by extracting the reads
+from RNA-seq bam file, randomly trimming read length, and writing back as FASTQ file. The resulting
+FASTQ file is then remapped using ```STAR```.
+The processed bam files of Ribo-seq and RNA-seq data are provided as inputs for each tool.
