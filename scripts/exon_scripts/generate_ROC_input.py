@@ -33,13 +33,13 @@ def roc_output(df,outname="ROC_input.txt"):
 #main
 #1. read result
 # ribotaper_df = read_resultccds("results_ccds")
-ribotaper_result = '/home/cmb-panasas2/wenzhenl/benchmark/{}/{}/results_ccds'.format(ref, pro)
+ribotaper_result = '/home/cmb-panasas2/wenzhenl/benchmark/exon_level/{}/{}/results_ccds'.format(ref, pro)
 ribotaper_df = read_resultccds(ribotaper_result)
 # ribocode = read_ribocode("ribocode_result.txt")
-ribocode_result = '/home/cmb-panasas2/wenzhenl/benchmark/{}/{}/ribocode_result.txt'.format(ref, pro)
+ribocode_result = '/home/cmb-panasas2/wenzhenl/benchmark/exon_level/{}/{}/ribocode_result.txt'.format(ref, pro)
 ribocode = read_ribocode(ribocode_result)
 # ribocop = read_ribocop("ribocop_result.txt")
-ribocop_result = '/home/cmb-panasas2/wenzhenl/benchmark/{}/{}/ribocop_results.txt'.format(ref, pro)
+ribocop_result = '/home/cmb-panasas2/wenzhenl/benchmark/exon_level/{}/{}/ribocop_results.txt'.format(ref, pro)
 ribocop = read_ribocop(ribocop_result)
 
 ##Drop NA values
