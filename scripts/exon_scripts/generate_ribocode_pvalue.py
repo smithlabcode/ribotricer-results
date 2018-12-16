@@ -14,8 +14,8 @@ from collections import namedtuple
 ## Note: change the path and file name 
 #files from RiboTaper
 cmd, ref, pro = sys.argv
-psite_file = "/home/cmb-panasas2/wenzhenl/benchmark/{}/{}/data_tracks/P_sites_all_tracks_ccds".format(ref, pro)
-center_file = "/home/cmb-panasas2/wenzhenl/benchmark/{}/{}/data_tracks/Centered_RNA_tracks_ccds".format(ref, pro)
+psite_file = "/home/cmb-panasas2/wenzhenl/benchmark/exon_level/{}/{}/data_tracks/P_sites_all_tracks_ccds".format(ref, pro)
+center_file = "/home/cmb-panasas2/wenzhenl/benchmark/exon_level/{}/{}/data_tracks/Centered_RNA_tracks_ccds".format(ref, pro)
 frame_file = "/home/cmb-panasas2/wenzhenl/genomes/{}/annotation/ribotaper_annotation/frames_ccds".format(ref)
 
 def read_frames(filename):
