@@ -1,0 +1,164 @@
+import os
+import errno
+
+RIBOWAVE_SCRIPTS_DIR = '/home/cmb-panasas2/skchoudh/github_projects/Ribowave/scripts'
+def mkdir_p(path):
+    """Python version mkdir -p
+
+    Parameters
+    ----------
+    path : string
+           Path to directory to create
+    """
+    if path:
+        try:
+            os.makedirs(path)
+        except OSError as exc:  # Python >2.5
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else:
+                raise
+
+
+include:
+    config['config_path']
+
+mkdir_p( os.path.join(OUT_DIR, 'slurm-logs'))
+
+CONDAENV = 'ribowave'
+workdir: OUT_DIR
+
+print(SAMPLES)
+
+rule all:
+  input:
+    expand('Ribowave_results/ribowave/{sample_type}.PF_psite', sample_type=SAMPLES)
+
+rule create_annotation:
+  input: 
+    gtf = GTF,
+    fasta = GENOME_FASTA,
+  output: 
+    exon_gtf = RIBOWAVE_ANNOTATION_DIR + '/exons.gtf',
+    start_codon = RIBOWAVE_ANNOTATION_DIR + '/start_codon.bed',
+    orfs = RIBOWAVE_ANNOTATION_DIR + '/final.ORFs'
+  benchmark: 'time_benchmarks/Ribowave/create_annotation/annotation.txt'
+  shell:
+    r'''mkdir -p {RIBOWAVE_ANNOTATION_DIR} &&\
+      source activate {CONDAENV] &&\
+      bash {RIBOWAVE_SCRIPTS_DIR}/create_annotation.sh -G {input.gtf} -f {input.fasta} -s {RIBOWAVE_SCRIPTS_DIR}'''
+
+
+rule p_site_determination:
+  input:
+    bam = INPUT_DIR + '/{sample_type}.bam',
+    start_codon = RIBOWAVE_ANNOTATION_DIR + '/start_codon.bed',
+  output: 'Ribowave_results/P-site/{sample_type}.psite1nt.txt'
+  benchmark: 'time_benchmarks/Ribowave/p_site_determination/{sample_type}.txt'
+  params:
+    out_dir = 'Ribowave_results',
+    out_name = '{sample_type}'
+  shell:
+    r'''source activate {CONDAENV} &&\
+    bash {RIBOWAVE_SCRIPTS_DIR}/P-site_determination.sh  -i  {input.bam}\
+      -S {input.start_codon}\
+      -o {params.out_dir}\
+      -n {params.out_name}\
+      -s {RIBOWAVE_SCRIPTS_DIR}
+    '''
+     
+
+rule create_psite_track:
+  input:
+    bam = INPUT_DIR + '/{sample_type}.bam',
+    exon_gtf = RIBOWAVE_ANNOTATION_DIR + '/exons.gtf',
+    genome_gtf = GTF,
+    psite = 'Ribowave_results/P-site/{sample_type}.psite1nt.txt'
+  output: 'Ribowave_results/bedgraph/{sample_type}/final.psite'
+  benchmark: 'time_benchmarks/Ribowave/create_psite_track/{sample_type}.txt'
+  params:
+    out_dir = 'Ribowave_results',
+    out_name = '{sample_type}'
+  shell:
+    r'''source activate {CONDAENV} &&\
+    bash {RIBOWAVE_SCRIPTS_DIR}/create_track_Ribo.sh\
+    -i {input.bam}\
+    -G {input.exon_gtf}\
+    -g {input.genome_gtf}\
+    -P {input.psite}\
+    -o {params.out_dir}\
+    -n {params.out_name}\
+    -s {RIBOWAVE_SCRIPTS_DIR}
+    '''
+  
+
+rule ribowave:
+  input: 
+    psite = 'Ribowave_results/bedgraph/{sample_type}/final.psite',
+    orfs = RIBOWAVE_ANNOTATION_DIR + '/final.ORFs'
+  output: 'Ribowave_results/ribowave/{sample_type}.PF_psite'
+  benchmark: 'time_benchmarks/Ribowave/ribowave/{sample_type}.txt'
+  params:
+    out_dir = 'Ribowave_results/ribowave',
+    out_name = '{sample_type}'
+  threads: 16
+  shell:
+    r'''source activate {CONDAENV} &&\
+   {RIBOWAVE_SCRIPTS_DIR}/Ribowave\
+    -PD
+    -a {input.psite}\
+    -b {input.orfs}\
+    -o {params.out_dir}\
+    -n {params.out_name}\
+    -s {RIBOWAVE_SCRIPTS_DIR}\
+    -p {threads}
+    '''
+
+
+"""
+#       Main function
+##      denoise raw signal 
+mkdir -p $out/Ribowave;
+$scripts"/Ribowave"  -a $out/bedgraph/SRR1039770/final.psite -b $annotation/final.ORFs -o $out/Ribowave   -n SRR1039770 -s $scripts -p 8;
+echo ""
+echo "---------------"
+echo ""
+
+##      predict p.value of translation
+mkdir -p $out/Ribowave;
+$scripts"/Ribowave"  -P -a $out/bedgraph/SRR1039770/final.psite -b $annotation/final.ORFs -o $out/Ribowave   -n SRR1039770 -s $scripts -p 8;
+echo ""
+echo "---------------"
+echo ""
+
+##      estimate abundance/density
+mkdir -p $out/Ribowave;
+$scripts"/Ribowave"  -D -a $out/bedgraph/SRR1039770/final.psite -b $annotation/final.ORFs -o $out/Ribowave   -n SRR1039770 -s $scripts -p 8;
+echo ""
+echo "---------------"
+echo ""
+
+
+##      calculating TE
+$scripts"/Ribowave" -T 9012445  $out/mRNA/SRR1039761.RPKM -a $out/bedgraph/SRR1039770/final.psite -b $annotation/final.ORFs -o $out/Ribowave   -n SRR1039770 -s $scripts -p 8;
+echo ""
+echo "---------------"
+echo ""
+
+##      calculating frameshift potential
+#       on annotated ORF
+mkdir -p $out/Ribowave;
+awk -F '\t' '$3=="anno"'        $annotation/final.ORFs  >       $annotation/aORF.ORFs;
+$scripts"/Ribowave" -F -a $out/bedgraph/SRR1039770/final.psite -b $annotation/aORF.ORFs -o $out/Ribowave   -n SRR1039770 -s $scripts -p 8;
+echo ""
+echo "---------------"
+echo ""
+
+##      multiple functions
+mkdir -p $out/Ribowave;
+$scripts"/Ribowave" -PD -T 9012445  $out/mRNA/SRR1039761.RPKM -a $out/bedgraph/SRR1039770/final.psite -b $annotation/final.ORFs -o $out/Ribowave   -n SRR1039770 -s $scripts -p 8;
+echo ""
+echo "---------------"
+echo ""
+
+"""

@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 52 of /auto/cmb-panasas2/skchoudh/github_projects/ribocop-results/tools/Ribowave/Snakefile:
+Missing input files for rule p_site_determination:
+/home/cmb-panasas2/wenzhenl/benchmark/gene_level/hg38/SRP102020_human/RNA_CCDS_lengths.bam

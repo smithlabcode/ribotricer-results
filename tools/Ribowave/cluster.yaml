@@ -1,0 +1,12 @@
+__default__:
+    partition: 'cmb'
+    time: '10:00:00'
+    mem: '20gb'
+    cores: 1
+    logout: 'slurm-logs/snakemake-slurm-logs-{rule}.{wildcards}.out'
+    logerror: 'slurm-logs/snakemake-slurm-logs-{rule}.{wildcards}.err'
+
+ribowave:
+  mem: '40gb'
+  cores: 16
+

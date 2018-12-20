@@ -1,0 +1,3 @@
+WorkflowError in line 24 of /auto/cmb-panasas2/skchoudh/github_projects/ribocop-results/tools/Ribowave/Snakefile:
+Failed to open /auto/cmb-panasas2/skchoudh/github_projects/ribocop-results/tools/Ribowave/configs/SRP078005_mouse.py.py.
+  File "/auto/cmb-panasas2/skchoudh/github_projects/ribocop-results/tools/Ribowave/Snakefile", line 24, in <module>
