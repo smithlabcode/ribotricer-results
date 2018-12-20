@@ -1,0 +1,5 @@
+SRP098789_human mapped_hg38 SRX2536409 27 29
+SRP098789_human mapped_hg38 SRX2536410 28 29
+SRP098789_human mapped_hg38 SRX2536411 27 29
+SRP090415_human mapped_hg38_reverse SRX2189157 27 30
+SRP090415_human mapped_hg38_reverse SRX2189159 27 30

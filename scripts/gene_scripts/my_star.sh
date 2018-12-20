@@ -3,7 +3,11 @@ source activate riboraptor
 data=$1
 ref=$2
 prefix=$3
-if [ "$ref" = "hg38" ]; then
+if [ "$ref" = "hg37" ]; then
+    echo "hg37"
+    gtf="/home/cmb-panasas2/wenzhenl/genomes/hg37/annotation/gencode.v19.annotation.gtf"
+    fasta="/home/cmb-panasas2/wenzhenl/genomes/hg37/fasta/hg37.fa"
+elif [ "$ref" = "hg38" ]; then
     echo "hg38"
     gtf="/home/cmb-panasas2/wenzhenl/genomes/hg38/annotation/gencode.v25.annotation.gtf"
     fasta="/home/cmb-panasas2/wenzhenl/genomes/hg38/fasta/hg38.fa"

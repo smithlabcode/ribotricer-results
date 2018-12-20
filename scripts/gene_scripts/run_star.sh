@@ -12,7 +12,7 @@ else
     gtf="/home/cmb-panasas2/wenzhenl/genomes/mm10/annotation/gencode.vM11.annotation.gtf"
     fasta="/home/cmb-panasas2/wenzhenl/genomes/mm10/fasta/mm10.fa"
 fi
-scripts="/home/cmb-panasas2/wenzhenl/benchmark/scripts"
+scripts="/home/cmb-panasas2/wenzhenl/benchmark/scripts/gene_scripts"
 star_index="/home/cmb-panasas2/wenzhenl/genomes/${ref}/star_annotated"
 
 cd $root

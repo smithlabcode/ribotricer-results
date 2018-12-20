@@ -8,5 +8,5 @@ do
     ref=${array[1]}
     min=${array[2]}
     max=${array[3]}
-    bash run_ORF-RATER.sh $ref $pro $min $max
+    bash run_ribocop.sh $ref $pro
 done < $file

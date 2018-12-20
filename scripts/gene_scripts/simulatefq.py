@@ -24,9 +24,9 @@ for r in bam.fetch(until_eof=True):
     seq = r.seq
     qual = r.qual
     name = r.query_name
-    if r.is_reverse:
-        seq = reverse_complement(seq[::-1])
-        qual = qual[::-1]
+    # if r.is_reverse:
+    #     seq = reverse_complement(seq[::-1])
+    #     qual = qual[::-1]
     if r.query_length in read_lengths:
         pass
     elif r.query_length < min(read_lengths):
