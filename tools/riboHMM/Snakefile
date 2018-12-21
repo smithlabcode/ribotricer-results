@@ -26,11 +26,12 @@ def get_wrapper(wrapper_name):
   path = os.path.dirname(os.path.abspath(os.path.realpath(workflow.snakefile)))
   return 'file://' + os.path.join(path, 'wrappers',  wrapper_name + '.py')
 
-mkdir_p(os.path.join(INPUT_DIR, 'slurm-logs'))
-RIBOHMM_SRC_DIR = '/home/cmb-panasas2/skchoudh/github_projects/riboHMM/'
-workdir: INPUT_DIR
+mkdir_p(os.path.join(OUT_DIR, 'slurm-logs'))
+RIBOHMM_SRC_DIR = '/home/cmb-panasas2/skchoudh/github_projects/riboHMM_upstream/'
+workdir: OUT_DIR
 
 SAMPLE_TYPES = ['RIBO', 'RNA']
+CONDAENV = 'ribohmm_py2'
 
 rule all:
   input:
@@ -43,15 +44,17 @@ rule all:
 rule bam_to_tbi_ribo:
   input: INPUT_DIR + '/RIBO_CCDS_lengths.bam'
   output: 
-    fwd = expand(INPUT_DIR + '/RIBO_CCDS_lengths_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
-    rev = expand(INPUT_DIR + '/RIBO_CCDS_lengths_rev.{read_length}.gz.tbi', read_length=READ_LENGTHS)
+    fwd = expand(OUT_DIR + '/RIBO_CCDS_lengths_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    rev = expand(OUT_DIR + '/RIBO_CCDS_lengths_rev.{read_length}.gz.tbi', read_length=READ_LENGTHS)
+  benchmark: 'benchmarks/riboHMM_benchmark/bam_to_tbi/RIBO.txt'
   shell:
-    r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype riboseq {input}'''
+    r'''source activate {CONDAENV} && python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype riboseq {input}'''
       
       
 rule bam_to_tbi_rna:
-  input: INPUT_DIR + '/RNA_CCDS_lengths.bam'
-  output: INPUT_DIR + '/RNA_CCDS_lengths.gz.tbi'
+  input: OUT_DIR + '/RNA_CCDS_lengths.bam'
+  output: OUT_DIR + '/RNA_CCDS_lengths.gz.tbi'
+  benchmark: 'benchmarks/riboHMM_benchmark/bam_to_tbi/RNA.txt'
   shell:
     r'''python {RIBOHMM_SRC_DIR}/bam_to_tbi.py --dtype rnaseq {input}'''
       
@@ -61,10 +64,11 @@ rule create_syn_footprints:
     gtf = ancient(GTF),
     fasta = ancient(GENOME_FASTA),
   output: SYNFOOTPRINTS_PREFIX + '_{read_length}.fq.gz'
+  benchmark: 'benchmarks/riboHMM_benchmark/create_syn_footprints/{read_length}.txt'
   params:
     read_length= '{read_length}'
   shell:
-    r'''python {RIBOHMM_SRC_DIR}/construct_synthetic_footprints.py --footprint_length {params.read_length} --output_fastq_prefix {SYNFOOTPRINTS_PREFIX} {input.gtf} {input.fasta}'''
+    r'''source activate {CONDAENV} && python {RIBOHMM_SRC_DIR}/construct_synthetic_footprints.py --footprint_length {params.read_length} --output_fastq_prefix {SYNFOOTPRINTS_PREFIX} {input.gtf} {input.fasta}'''
 
 
 rule map_star:
@@ -81,6 +85,7 @@ rule map_star:
     intron_bed = INTRON_BED,
     tmp_dir = '/tmp'
   threads: 16
+  benchmark: 'benchmarks/riboHMM_benchmark/map_star/{read_length}.txt'
   wrapper:
     get_wrapper('star_wrapper')
 
@@ -90,23 +95,25 @@ rule compute_mappability:
   output: SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi'
   params:
     prefix = SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}'
+  benchmark: 'benchmarks/riboHMM_benchmark/compute_mappability/{read_length}.txt'
   shell:
-    r'''python {RIBOHMM_SRC_DIR}/compute_mappability.py {input} {params.prefix}'''
+    r'''source actiate {CONDAENV} && python {RIBOHMM_SRC_DIR}/compute_mappability.py {input} {params.prefix}'''
 
 
 rule learn_model:
   input:
-    rna_tbi = INPUT_DIR + '/RNA_CCDS_lengths.gz.tbi',
-    ribo_tbi = expand(INPUT_DIR + '/' + SAMPLE_TYPES[0] + '_CCDS_lengths_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
+    rna_tbi = OUT_DIR + '/RNA_CCDS_lengths.gz.tbi',
+    ribo_tbi = expand(OUT_DIR + '/' + SAMPLE_TYPES[0] + '_CCDS_lengths_fwd.{read_length}.gz.tbi', read_length=READ_LENGTHS),
     gtf = GTF,
     fasta = GENOME_FASTA,
     mappability_file = expand(SYNFOOTPRINTS_PREFIX + '_mappability_{read_length}.gz.tbi', read_length=READ_LENGTHS)
   params:
-    rna_prefix = INPUT_DIR + '/RNA_CCDS_lengths',
-    ribo_prefix = INPUT_DIR + '/RIBO_CCDS_lengths',
+    rna_prefix = OUT_DIR + '/RNA_CCDS_lengths',
+    ribo_prefix = OUT_DIR + '/RIBO_CCDS_lengths',
     mappability_prefix = SYNFOOTPRINTS_PREFIX + '_mappability'
   output: 
     model = 'riboHMM_out/learn_model.txt',
     log = 'riboHMM_out/log.txt'
+  benchmark: 'benchmarks/riboHMM_benchmark/learn_model/{read_length}.txt'
   shell:
-    r'''python {RIBOHMM_SRC_DIR}/learn_model.py --rnaseq_file {params.rna_prefix} --mappability_file {params.mappability_prefix} --log_file {output.log} --model_file {output.model} {input.fasta} {input.gtf} {params.ribo_prefix}'''
+    r'''source activate {CONDAENV} && python {RIBOHMM_SRC_DIR}/learn_model.py --rnaseq_file {params.rna_prefix} --mappability_file {params.mappability_prefix} --log_file {output.log} --model_file {output.model} {input.fasta} {input.gtf} {params.ribo_prefix}'''

@@ -1,5 +1,6 @@
 
 GTF = '/home/cmb-panasas2/skchoudh/genomes/mm10/annotation/gencode.vM11.annotation.gtf'
+CHROM_SIZES = '/home/cmb-panasas2/skchoudh/genomes/mm10/fasta/mm10.chrom.sizes'
 GENOME_FASTA = '/home/cmb-panasas2/skchoudh/genomes/mm10/fasta/mm10.fa'
 RIBOWAVE_ANNOTATION_DIR = '/home/cmb-panasas2/skchoudh/genomes/mm10/ribowave_annotation'
 INPUT_DIR = '/home/cmb-panasas2/wenzhenl/benchmark/gene_level/mm10/SRP115915_mouse'

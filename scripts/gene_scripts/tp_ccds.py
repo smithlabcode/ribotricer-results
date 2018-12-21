@@ -115,6 +115,7 @@ with open(ccds_file, 'r') as orf:
                     valid = False
                     keyerror += 1
                     continue
+                    
             if (valid and rna_reads >= cutoff and len(gene_ids) == 1 and
                     orf_length >= min_len):
                 cop_id = ','.join(cop_id)

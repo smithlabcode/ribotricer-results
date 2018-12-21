@@ -1,5 +1,6 @@
 
 INPUT_DIR = '/home/cmb-panasas2/skchoudh/benchmark/gene_level/hg38/SRP092068_human'
+OUT_DIR = '/staging/as/skchoudh/benchmark/gene_level/hg38/SRP092068_human'
 SYNFOOTPRINTS_PREFIX = '/staging/as/skchoudh/riboHMM_synthetic_footprints/hg38/hg38_synfootprints'
 READ_LENGTHS = ['26', '27', '28', '29', '30']
 INTRON_BED = '/home/cmb-panasas2/skchoudh/genomes/hg38/annotation/gencode.v25.gffutils.intron.bed'

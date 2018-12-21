@@ -60,12 +60,7 @@ rule p_site_determination:
     out_name = '{sample_type}'
   shell:
     r'''source activate {CONDAENV} &&\
-    bash {RIBOWAVE_SCRIPTS_DIR}/P-site_determination.sh  -i  {input.bam}\
-      -S {input.start_codon}\
-      -o {params.out_dir}\
-      -n {params.out_name}\
-      -s {RIBOWAVE_SCRIPTS_DIR}
-    '''
+    bash {RIBOWAVE_SCRIPTS_DIR}/P-site_determination.sh  -i  {input.bam} -S {input.start_codon} -o {params.out_dir} -n {params.out_name} -s {RIBOWAVE_SCRIPTS_DIR}'''
      
 
 rule create_psite_track:
@@ -73,6 +68,7 @@ rule create_psite_track:
     bam = INPUT_DIR + '/{sample_type}.bam',
     exon_gtf = RIBOWAVE_ANNOTATION_DIR + '/exons.gtf',
     genome_gtf = GTF,
+    chr_sizes = CHROM_SIZES,
     psite = 'Ribowave_results/P-site/{sample_type}.psite1nt.txt'
   output: 'Ribowave_results/bedgraph/{sample_type}/final.psite'
   benchmark: 'time_benchmarks/Ribowave/create_psite_track/{sample_type}.txt'
@@ -81,15 +77,7 @@ rule create_psite_track:
     out_name = '{sample_type}'
   shell:
     r'''source activate {CONDAENV} &&\
-    bash {RIBOWAVE_SCRIPTS_DIR}/create_track_Ribo.sh\
-    -i {input.bam}\
-    -G {input.exon_gtf}\
-    -g {input.genome_gtf}\
-    -P {input.psite}\
-    -o {params.out_dir}\
-    -n {params.out_name}\
-    -s {RIBOWAVE_SCRIPTS_DIR}
-    '''
+    bash {RIBOWAVE_SCRIPTS_DIR}/create_track_Ribo.sh -i {input.bam} -G {input.exon_gtf} -g {input.chr_sizes} -P {input.psite} -o {params.out_dir} -n {params.out_name} -s {RIBOWAVE_SCRIPTS_DIR}'''
   
 
 rule ribowave:
@@ -103,16 +91,7 @@ rule ribowave:
     out_name = '{sample_type}'
   threads: 16
   shell:
-    r'''source activate {CONDAENV} &&\
-   {RIBOWAVE_SCRIPTS_DIR}/Ribowave\
-    -PD
-    -a {input.psite}\
-    -b {input.orfs}\
-    -o {params.out_dir}\
-    -n {params.out_name}\
-    -s {RIBOWAVE_SCRIPTS_DIR}\
-    -p {threads}
-    '''
+    r'''source activate {CONDAENV} && {RIBOWAVE_SCRIPTS_DIR}/Ribowave -PD -a {input.psite} -b {input.orfs} -o {params.out_dir} -n {params.out_name} -s {RIBOWAVE_SCRIPTS_DIR} -p {threads}'''
 
 
 """

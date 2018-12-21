@@ -1,7 +1,7 @@
 __default__:
     partition: 'cmb'
-    time: '24:00:00'
-    mem: '4gb'
+    time: '60:00:00'
+    mem: '40gb'
     cores: 1
     logout: 'slurm-logs/snakemake-slurm-logs-{rule}.{wildcards}.out'
     logerror: 'slurm-logs/snakemake-slurm-logs-{rule}.{wildcards}.err'
@@ -11,5 +11,5 @@ cufflinks:
     cores: 16
 
 spectre:
-    mem: '20gb'
+    mem: '40gb'
     cores: 16
