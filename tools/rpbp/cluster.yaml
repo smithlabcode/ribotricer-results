@@ -1,0 +1,12 @@
+__default__:
+    partition: 'cmb'
+    time: '12:00:00'
+    mem: '4gb'
+    cores: 1
+    logout: 'slurm-logs/snakemake-slurm-logs-{rule}.{wildcards}.out'
+    logerror: 'slurm-logs/snakemake-slurm-logs-{rule}.{wildcards}.err'
+
+run_rpbp:
+  mem: '120gb'
+  cores: 16
+

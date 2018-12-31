@@ -1,0 +1,57 @@
+import os
+import errno
+
+def mkdir_p(path):
+    """Python version mkdir -p
+
+    Parameters
+    ----------
+    path : string
+           Path to directory to create
+    """
+    if path:
+        try:
+            os.makedirs(path)
+        except OSError as exc:  # Python >2.5
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else:
+                raise
+
+
+include:
+    config['config_path']
+
+mkdir_p( os.path.join(OUT_DIR, 'slurm-logs'))
+
+CONDAENV = 'rpbp_v2'
+workdir: OUT_DIR
+
+print(SAMPLES)
+
+rule all:
+  input:
+    expand('without-rrna-mapping/{sample_type}.alignments-only.bam', sample_type=SAMPLES),
+    expand('rpbp_results/orf-predictions/{sample_type}.alignments-only-unique.length-{lengths}.offset-{offsets}.frac-0.2.rw-0.bayes-factors.bed.gz', sample_type=SAMPLES, lengths=LENGTHS, offsets=OFFSETS)
+
+
+rule create_symlink:
+  input: INPUT_DIR + '/{sample_type}.bam' 
+  output: 'without-rrna-mapping/{sample_type}.alignments-only.bam'
+  shell:
+    r'''
+    ln -sf {input} {OUT_DIR}/{output}
+    '''
+
+rule run_rpbp:
+  input: 
+    bam = expand('without-rrna-mapping/{sample_type}.alignments-only.bam', sample_type=SAMPLES),
+    config = YAML_CONFIG_PREFIX + '.yaml'
+  output: 
+    bed = expand('rpbp_results/orf-predictions/{sample_type}.alignments-only-unique.length-{lengths}.offset-{offsets}.frac-0.2.rw-0.bayes-factors.bed.gz', sample_type=SAMPLES, lengths=LENGTHS, offsets=OFFSETS),
+    log = 'logs/rpbp_log.txt'
+  benchmark: 'time_benchmarks/rpbp/run_rpbp/run_rpbp.txt'
+  threads:16
+  shell:
+    r'''source activate {CONDAENV} && run-all-rpbp-instances {input.config} --overwrite --num-cpus 8 --logging-level INFO --log-file {output.log} --keep-intermediate-files'''
+

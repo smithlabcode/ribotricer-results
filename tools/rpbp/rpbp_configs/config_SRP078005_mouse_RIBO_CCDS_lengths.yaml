@@ -1,0 +1,242 @@
+
+genome_name: mm10
+genome_base_path: /home/cmb-panasas2/skchoudh/genomes/mm10/rpbp_index_mrna
+gtf: /home/cmb-panasas2/skchoudh/genomes/mm10/annotation/gencode.vM11.annotation.gtf
+fasta: /home/cmb-panasas2/skchoudh/genomes/mm10/fasta/mm10.fa
+ribosomal_index: /home/cmb-panasas2/skchoudh/genomes/mm10/rpbp_index_rrna
+star_index: /home/cmb-panasas2/skchoudh/genomes/mm10/rpbp_star_index
+
+#adapter_file: /path/to/rp-bp/riboseq-adapters.fa
+
+riboseq_data: /staging/as/skchoudh/benchmark/gene_level/mm10/SRP078005_mouse/rpbp_results
+
+riboseq_samples:
+    RIBO_CCDS_lengths: 
+
+riboseq_biological_replicates:
+    # these must still be the same names from riboseq_samples
+    RIBO_CCDS_lengths:
+        - RIBO_CCDS_lengths
+
+note: alignments-only
+
+orf_note: atg-only
+
+#models_base: /path/to/rp-bp/models
+max_uncalled: 1
+pre_trim_left: 0
+adapter_sequence: null
+quality_format: sanger
+
+
+sjdb_overhang: 50
+align_intron_minc: 20
+align_intron_maxc: 100000
+out_filter_intron_motifsc: RemoveNoncanonicalUnannotated
+out_filter_mismatch_n_maxc: 1
+out_filter_mismatch_n_over_l_maxc: 0.04
+out_filter_typec: BySJout
+out_sam_attributesc: [AS, NH, HI, nM, MD]
+
+# METAGENE PERIODICITY OPTIONS, OPTIONAL
+
+# the number of bases upstream of the translation initiation site to begin 
+# constructing the metagene profile. default: 50
+metagene_profile_start_upstream: 50 
+
+# the number of bases downstream of the translation initiation site to end 
+# the metagene profile. default: 20
+metagene_profile_start_downstream: 20
+
+# the number of bases upstream of the translation termination site to begin 
+# constructing the metagene profile. default: 50
+metagene_profile_end_upstream: 50
+
+# the number of bases downstream of the translation termination site to end 
+# the metagene profile. default: 20
+metagene_profile_end_downstream: 20
+
+# the position, relative to the translation initiation site, to begin 
+# calculating periodicity Bayes factors (inclusive)
+periodic_offset_start: -20
+
+# the position, relative to the translation initiation site, to stop 
+# calculating periodicity Bayes factors (inclusive)
+periodic_offset_end: 0
+
+# the length of the profile to use in the models. 
+
+# N.B. metagene_profile_length + periodic_offset_end must be consistent with 
+# the length of the extracted metagene profile
+metagene_profile_length: 21
+
+# the number of iterations to use for each chain in the MCMC sampling. The 
+# first half of the iterations are discarded as burn-in samples. All of 
+# the remaining samples are used to estimate the posterior distributions. That 
+# is, we do not use thinning. default: 500
+
+# N.B. Increasing the number of iterations will increase the running time of
+# the estimation roughly linearly.
+metagene_profile_iterations: 500
+
+# SHARED MARKOV CHAIN MONTE CARLO OPTIONS, OPTIONAL
+
+# These affect the MCMC both for estimating metagene profile periodicity and 
+# ORF translation Bayes factors.
+
+# the random seed for the MCMC sampling. default: 8675309
+seed: 8675309 
+
+# the number of chains to use in the MCMC sampling. default: 2
+
+# N.B. Increases in the number of chains should improve the quality of
+# estimation (especially reducing variance), but will increase the running
+# time proportionally. For example, changing the number of chains from 2 to
+# 4 will roughly double the running time of estimation.
+chains: 2
+
+# PERIODICITY AND OFFSET OPTIONS, OPTIONAL
+
+# FIXED LENGTHS AND OFFSETS
+# By default, the Rp-Bp pipelines use the periodicity estimation technique to
+# select periodic read lengths and P-site offsets. However, fixed lengths and
+# offsets can be specified with the following options.
+
+# if this variable is present in the config file with any value, then the 
+# estimated periodic read lengths and offsets will not be used. Instead, 
+# fixed values given by lengths and offsets (below) will be used.
+
+# uncomment this line to use the fixed lengths and offsets
+use_fixed_lengths: yes
+
+# a list of read lengths which will be used for creating the profiles if the 
+# use_fixed_lengths option is given. Presumably, these are lengths that have 
+# periodic metagene profiles.
+
+# This value is ignored if use_fixed_lengths is not set.
+lengths: [26, 27, 28, 29, 30]
+
+# the P-site offset to use for each read length specifed by --lengths if the 
+# use_fixed_lengths option is given. The number of offsets must match the 
+# number of lengths, and they are assumed to match. For example lengths of 
+# [26, 29] with offsets [9, 12] means only reads of lengths 26 bp and 29 bp 
+# will be used to create the profiles. The 26 bp reads will be shifted by 
+# 9 bp in the 5 direction, while reads of length 29 bp will be shifted by 12 bp.
+
+# This value is ignored if use_fixed_lengths is not set.
+offsets: [12, 12, 12, 12, 12]
+
+# if fixed lengths are not used, the minimum number of reads for a particular 
+# length in the filtered genome profile. Read lengths with fewer than this 
+# number of reads will not be used. default: 1000
+#min_metagene_profile_count: 1000
+
+# N.B. This value is set artificially low for the example to work!
+min_metagene_profile_count: 10
+
+# if fixed lengths are not used...
+# if max_metagene_profile_bayes_factor_var is not None, then this is taken as a 
+# hard threshold on the estimated Bayes factor mean. 
+
+# If min_metagene_bf_likelihood is given, then this is taken as 
+# the boundary value; that is, a profile is "periodic" if:
+#
+#       [P(bf > min_metagene_bf_mean)] > min_metagene_bf_likelihood
+#
+# If both max_metagene_bf_var and min_metagene_bf_likelihood are None, then this 
+# is taken as a hard threshold on the mean for selecting periodic read lengths.
+#
+# If both max_metagene_bf_var and min_metagene_bf_likelihood are given, then both 
+# filters will be applied and the result will be the intersection.
+min_metagene_bf_mean: 5
+
+# if given, then this is taken as a hard threshold on the estimated Bayes factor 
+# variance. default: None, i.e., this filter is not used. (null in yaml) 
+max_metagene_bf_var: null
+
+# if given, then this is taken a threshold on the likelihood of periodicity 
+# (see min_metagene_bf_mean description for more details). default: 0.5
+min_metagene_bf_likelihood: 0.5
+
+# SMOOTHING OPTIONS, OPTIONAL
+
+# the fraction of the profile to use for smoothing within LOWESS. default: 0.2
+smoothing_fraction: 0.2
+
+# the number of reweighting iterations to use within LOWESS. Please see the
+# statsmodels documentation for a detailed description of this parameter.
+# default: 0
+smoothing_reweighting_iterations: 0
+
+# if this value is greater than 0, then ORFs whose length (in nucleotides) 
+# is less than this value will not be smoothed, and neither the Bayes factor 
+# estimates nor the chi-square p-value will be calcualted. default: 0
+min_orf_length: 0
+
+# if this value is greater than 0, then ORFs whose length (in nucleotides) 
+# is greater than this value will not be smoothed, and neither the Bayes factor 
+# estimates nor the chi-square p-value will be calcualted. default: 0
+max_orf_length: 0
+
+# ORFs for which the number of in-frame reads is less than this value will not
+# be smoothed, and neither the Bayes factor estimates nor the chi-square
+# p-value will be calculated. default: 5
+min_signal: 5
+
+
+# BAYES FACTOR ESTIMATION OPTIONS, OPTIONAL
+
+# if this flag is in the config file with any value, then only the Rp-chi 
+# pipeline will be performed; namely, the translation models will not be fit 
+# to the data, and the posterior distributions will not be estimated.
+
+# uncomment this line to only run the Rp-chi pipeline
+#chi_square_only: yes
+
+# the number of iterations to use for each chain in the MCMC sampling. The first 
+# half of the iterations are discarded as burn-in samples. All of the remaining 
+# samples are used to estimate the posterior distributions. (That is, we do not 
+# use thinning.) default: 200
+
+# N.B. Increasing the number of iterations will increase the running time of
+# the estimation roughly linearly.
+translation_iterations: 200
+
+# SELECTION PREDICTED ORFS OPTIONS, OPTIONAL
+
+# the minimum value for the estimated Bayes factor mean to "predict" that an 
+# ORF is translated. This value is used in conjunction with both min_bf_mean
+# and min_bf_likelihood.
+#
+# If max_bf_var is a positive value, then this is taken as a hard threshold on 
+# the estimated Bayes factor mean. ORFs must meet both the min_bf_mean and
+# max_bf_var filters to be selected as "translated."
+#
+# If min_bf_likelihood is given, then this is taken as the boundary value; that
+# is, an ORF is selected as "translated" if:
+#
+#   [P(bf > min_bf_mean)] > min_bf_likelihood
+#
+# If both max_bf_var and min_bf_likelihood are None, then this is taken as a
+# hard threshold on the mean for selecting translated ORFs.
+#
+# If both max_bf_var and min_bf_likelihood are given, then both filters will 
+# be applied and the result will be the intersection.
+#
+# default: 5
+min_bf_mean: 5
+
+# the maximum value value for the estimated Bayes factor variance to "predict" 
+# that an ORF is translated. ORFs must meet both the min_bf_mean and max_bf_var 
+# filters to be predicted. See the description for min_bf_mean for more 
+# details. default: null (i.e., this filter is not used by default)
+max_bf_var: null
+
+# the minimum probability of the BF exceeding min_bf_mean to select an ORF as
+# translated. See the description for min_bf_mean for more details. default: 0.5
+min_bf_likelihood: 0.5
+
+# for the chi-square test, this value is first Bonferroni corrected 
+# based on the number of ORFs which pass the smoothing filters. It is 
+# then used as the significance threshold to select translated ORFs. default: 0.01
+chisq_significance_level: 0.01
