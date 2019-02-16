@@ -7,6 +7,6 @@ __default__:
     logerror: 'slurm-logs/snakemake-slurm-logs-{rule}.{wildcards}.err'
 
 ribowave:
-  mem: '40gb'
+  mem: '60gb'
   cores: 16
 

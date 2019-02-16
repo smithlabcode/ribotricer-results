@@ -8,6 +8,7 @@ Bed file will be used to intersect with bam file to extract reads for only CCDS.
 import sys
 import random
 import pysam
+random.seed(42)
 
 rna = sys.argv[1]
 lengths = sys.argv[2]
