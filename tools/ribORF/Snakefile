@@ -18,9 +18,12 @@ def mkdir_p(path):
             else:
                 raise
 
-
+SAMPLES = None
 include:
     config['config_path']
+
+if SAMPLES is None:
+  SAMPLES = ['RNA_CCDS_lengths', 'RIBO_CCDS_lengths']
 
 mkdir_p( os.path.join(OUT_DIR, 'slurm-logs'))
 
@@ -30,19 +33,19 @@ workdir: OUT_DIR
 
 rule all:
   input:
-    expand('ribORF_results/orfs/{sample_type}/pred.pvalue.parameters.txt', sample_type=['RNA', 'RIBO'])
+    expand('ribORF_results/orfs/{sample_type}/pred.pvalue.parameters.txt', sample_type=SAMPLES)
 
 rule bam_to_sam:
-  input: INPUT_DIR + '/{sample_type}_CCDS_lengths.bam'
-  output: 'ribORF_results/sam_original/{sample_type}_CCDS_lengths.sam'
+  input: INPUT_DIR + '/{sample_type}.bam'
+  output: 'ribORF_results/sam_original/{sample_type}.sam'
   benchmark: 'time_benchmarks/riboORF_benchmark/bam_to_sam/{sample_type}.txt'
   shell:
     r'''samtools view -h -o {output} {input}'''
 
 
 rule correct_offset:
-  input: 'ribORF_results/sam_original/{sample_type}_CCDS_lengths.sam'
-  output: 'ribORF_results/sam_offsetcorrected/{sample_type}_CCDS_lengths.sam'
+  input: 'ribORF_results/sam_original/{sample_type}.sam'
+  output: 'ribORF_results/sam_offsetcorrected/{sample_type}.sam'
   benchmark: 'time_benchmarks/riboORF_benchmark/correct_offset/{sample_type}.txt'
   params:
     offset_file = OFFSET_FILE,
@@ -52,7 +55,7 @@ rule correct_offset:
 
 
 rule run_ribORF:
-  input: 'ribORF_results/sam_offsetcorrected/{sample_type}_CCDS_lengths.sam'
+  input: 'ribORF_results/sam_offsetcorrected/{sample_type}.sam'
   output: 'ribORF_results/orfs/{sample_type}/pred.pvalue.parameters.txt'
   benchmark: 'time_benchmarks/riboORF_benchmark/run_ribORF/{sample_type}.txt'
   params:
