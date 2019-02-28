@@ -1,0 +1,94 @@
+---
+title: "Functional anlaysis for uORF genes"
+output: html_notebook
+---
+
+
+```{r}
+suppressMessages(library(clusterProfiler))
+suppressMessages(library(org.Hs.eg.db))
+suppressMessages(library(org.Mm.eg.db))
+suppressMessages(library(RDAVIDWebService))
+```
+
+```{r}
+writeEKG <- function(ekg, prefix){
+  ekg <- as.data.frame(ekg)
+  ekg.geneID <- strsplit(as.character(ekg$geneID), '/', fixed=TRUE)
+  ekg.genes <- lapply(ekg.geneID, get_name)
+  ekg$geneID <- ekg.genes
+  ekg$geneID <- vapply(ekg$geneID , paste, collapse = ", ", character(1L))
+  write.table(ekg, file.path('..','results','alternative_splicing', 'Fanctional_analysis', paste(prefix, 'tsv', sep='.')))
+}
+
+
+
+writeego <- function(ego, prefix){
+  ego <- as.data.frame(ego)
+  ego.geneID <- strsplit(as.character(ego$geneID), '/', fixed=TRUE)
+  ego.genes <- lapply(ego.geneID, get_name)
+  ego$geneID <- ego.genes
+  ego$geneID <- vapply(ego$geneID , paste, collapse = ", ", character(1L))
+  write.table(ego, file.path('..','results','alternative_splicing', 'Fanctional_analysis', paste(prefix, 'tsv', sep='.')))
+}
+```
+
+# Human
+```{r}
+human.genes <- readLines('../real/uorfs/human_uorf_two_samples.txt')
+human.genes.entrez <- bitr(human.genes, fromType='ENSEMBL', toType='ENTREZID', OrgDb='org.Hs.eg.db')
+human.genes.GO <- enrichGO(gene          = human.genes.entrez$ENTREZID,
+                     OrgDb         = org.Hs.eg.db,
+                     ont           = 'BP',
+                     pAdjustMethod = 'BH',
+                     pvalueCutoff  = 0.01,
+                     qvalueCutoff  = 0.05)
+```
+
+```{r}
+dotplot(human.genes.GO, showCategory=10)
+ggsave('../real/uorfs/human_uorf_two_samples.GO.pdf', width = 10)
+```
+
+```{r}
+human.genes.KEGG <- enrichKEGG(gene = human.genes.entrez$ENTREZID,
+                             pAdjustMethod = 'BH',
+                             pvalueCutoff  = 0.01,
+                             qvalueCutoff  = 0.05)
+```
+
+```{r}
+dotplot(human.genes.KEGG)
+ggsave('../real/uorfs/human_uorf_two_samples.KEGG.pdf', width = 10)
+
+```
+
+# Mouse
+```{r}
+mouse.genes <- readLines('../real/uorfs/mouse_uorf_two_samples.txt')
+mouse.genes.entrez <- bitr(mouse.genes, fromType='ENSEMBL', toType='ENTREZID', OrgDb='org.Mm.eg.db')
+mouse.genes.GO <- enrichGO(gene          = mouse.genes.entrez$ENTREZID,
+                           OrgDb         = org.Mm.eg.db,
+                           ont           = 'BP',
+                           pAdjustMethod = 'BH',
+                           pvalueCutoff  = 0.01,
+                           qvalueCutoff  = 0.05)
+```
+
+```{r}
+dotplot(mouse.genes.GO)
+ggsave('../real/uorfs/mouse_uorf_two_samples.GO.pdf', width = 10)
+```
+
+```{r}
+mouse.genes.KEGG <- enrichKEGG(gene = mouse.genes.entrez$ENTREZID,
+                               pAdjustMethod = 'BH',
+                               organism = "mmu",
+                               pvalueCutoff  = 0.01,
+                               qvalueCutoff  = 0.05)
+```
+
+```{r}
+dotplot(mouse.genes.KEGG)
+ggsave('../real/uorfs/mouse_uorf_two_samples.KEGG.pdf', width = 10)
+```
