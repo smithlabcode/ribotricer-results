@@ -38,28 +38,41 @@ writeego <- function(ego, prefix){
 human.genes <- readLines('../real/uorfs/human_uorf_two_samples.txt')
 human.genes.entrez <- bitr(human.genes, fromType='ENSEMBL', toType='ENTREZID', OrgDb='org.Hs.eg.db')
 human.genes.GO <- enrichGO(gene          = human.genes.entrez$ENTREZID,
-                     OrgDb         = org.Hs.eg.db,
-                     ont           = 'BP',
-                     pAdjustMethod = 'BH',
-                     pvalueCutoff  = 0.01,
-                     qvalueCutoff  = 0.05)
+                           OrgDb         = org.Hs.eg.db,
+                           ont           = 'BP',
+                           pAdjustMethod = 'BH',
+                           pvalueCutoff  = 0.01,
+                           qvalueCutoff  = 0.05)
 ```
 
 ```{r}
-dotplot(human.genes.GO, showCategory=10)
-ggsave('../real/uorfs/human_uorf_two_samples.GO.pdf', width = 10)
+dotplot(human.genes.GO,  showCategory=15)
+ggsave('../real/uorfs/human_uorf_two_samples.GO.pdf', width = 10, height=10)
 ```
 
 ```{r}
 human.genes.KEGG <- enrichKEGG(gene = human.genes.entrez$ENTREZID,
-                             pAdjustMethod = 'BH',
-                             pvalueCutoff  = 0.01,
-                             qvalueCutoff  = 0.05)
+                               pAdjustMethod = 'BH',
+                               pvalueCutoff  = 0.01,
+                               qvalueCutoff  = 0.05)
 ```
 
 ```{r}
-dotplot(human.genes.KEGG)
-ggsave('../real/uorfs/human_uorf_two_samples.KEGG.pdf', width = 10)
+dotplot(human.genes.KEGG,  showCategory=15)
+ggsave('../real/uorfs/human_uorf_two_samples.KEGG.pdf', width = 10, height=10)
+
+```
+```{r}
+human.david <- enrichDAVID(gene = human.genes.entrez$ENTREZID,,
+                           idType = "ENTREZ_GENE_ID",
+                           listType = "Gene",
+                           annotation = "KEGG_PATHWAY",
+                           david.user = "skchoudh@usc.edu")
+```
+
+```{r}
+dotplot(human.david, showCategory=15)
+ggsave('../real/uorfs/human_uorf_two_samples.david.KEGG.pdf', width = 10, height=10)
 
 ```
 
@@ -76,8 +89,8 @@ mouse.genes.GO <- enrichGO(gene          = mouse.genes.entrez$ENTREZID,
 ```
 
 ```{r}
-dotplot(mouse.genes.GO)
-ggsave('../real/uorfs/mouse_uorf_two_samples.GO.pdf', width = 10)
+dotplot(mouse.genes.GO, showCategory=15)
+ggsave('../real/uorfs/mouse_uorf_two_samples.GO.pdf', width = 10, height=10)
 ```
 
 ```{r}
@@ -89,6 +102,22 @@ mouse.genes.KEGG <- enrichKEGG(gene = mouse.genes.entrez$ENTREZID,
 ```
 
 ```{r}
-dotplot(mouse.genes.KEGG)
-ggsave('../real/uorfs/mouse_uorf_two_samples.KEGG.pdf', width = 10)
+dotplot(mouse.genes.KEGG, showCategory=15)
+ggsave('../real/uorfs/mouse_uorf_two_samples.KEGG.pdf', width = 10, height=10)
+```
+
+
+
+```{r}
+mouse.david <- enrichDAVID(gene = mouse.genes.entrez$ENTREZID,,
+                           idType = "ENTREZ_GENE_ID",
+                           listType = "Gene",
+                           species = "mus_musculus",
+                           annotation = "KEGG_PATHWAY",
+                           david.user = "skchoudh@usc.edu")
+```
+
+```{r}
+dotplot(mouse.david, showCategory=15)
+ggsave('../real/uorfs/mouse_uorf_two_samples.david.KEGG.pdf', width = 10, height=10)
 ```
