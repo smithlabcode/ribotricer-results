@@ -68,7 +68,7 @@ ggsave('../real/uorfs/human_uorf_two_samples.KEGG.pdf', width = 10, height=10)
 ```
 
 ```{r}
-dotplot(human.genes.KEGG,  showCategory=15)
+barplot(human.genes.KEGG,  showCategory=15)
 ggsave('../real/uorfs/human_uorf_two_samples.KEGG.bar.pdf', width = 10, height=10)
 ```
 
