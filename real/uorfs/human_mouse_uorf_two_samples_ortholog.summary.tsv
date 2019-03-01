@@ -1,0 +1,5 @@
+species	gene_type	value
+human	TF	70
+mouse	TF	80
+human	non-TF	672
+mouse	non-TF	662
