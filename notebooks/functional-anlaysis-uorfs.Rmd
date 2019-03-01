@@ -47,6 +47,11 @@ human.genes.GO <- enrichGO(gene          = human.genes.entrez$ENTREZID,
 
 ```{r}
 dotplot(human.genes.GO,  showCategory=15)
+ggsave('../real/uorfs/human_uorf_two_samples.GO.dot.pdf', width = 10, height=10)
+```
+
+```{r}
+barplot(human.genes.GO,  showCategory=15)
 ggsave('../real/uorfs/human_uorf_two_samples.GO.pdf', width = 10, height=10)
 ```
 
@@ -60,8 +65,13 @@ human.genes.KEGG <- enrichKEGG(gene = human.genes.entrez$ENTREZID,
 ```{r}
 dotplot(human.genes.KEGG,  showCategory=15)
 ggsave('../real/uorfs/human_uorf_two_samples.KEGG.pdf', width = 10, height=10)
-
 ```
+
+```{r}
+dotplot(human.genes.KEGG,  showCategory=15)
+ggsave('../real/uorfs/human_uorf_two_samples.KEGG.bar.pdf', width = 10, height=10)
+```
+
 ```{r}
 human.david <- enrichDAVID(gene = human.genes.entrez$ENTREZID,,
                            idType = "ENTREZ_GENE_ID",
@@ -73,8 +83,14 @@ human.david <- enrichDAVID(gene = human.genes.entrez$ENTREZID,,
 ```{r}
 dotplot(human.david, showCategory=15)
 ggsave('../real/uorfs/human_uorf_two_samples.david.KEGG.pdf', width = 10, height=10)
-
 ```
+
+```{r}
+dotplot(human.david, showCategory=15)
+ggsave('../real/uorfs/human_uorf_two_samples.david.KEGG.bar.pdf', width = 10, height=10)
+```
+
+
 
 # Mouse
 ```{r}
@@ -94,6 +110,12 @@ ggsave('../real/uorfs/mouse_uorf_two_samples.GO.pdf', width = 10, height=10)
 ```
 
 ```{r}
+barplot(mouse.genes.GO, showCategory=15)
+ggsave('../real/uorfs/mouse_uorf_two_samples.GO.bar.pdf', width = 10, height=10)
+```
+
+
+```{r}
 mouse.genes.KEGG <- enrichKEGG(gene = mouse.genes.entrez$ENTREZID,
                                pAdjustMethod = 'BH',
                                organism = "mmu",
@@ -106,6 +128,10 @@ dotplot(mouse.genes.KEGG, showCategory=15)
 ggsave('../real/uorfs/mouse_uorf_two_samples.KEGG.pdf', width = 10, height=10)
 ```
 
+```{r}
+dotplot(mouse.genes.KEGG, showCategory=15)
+ggsave('../real/uorfs/mouse_uorf_two_samples.KEGG.bar.pdf', width = 10, height=10)
+```
 
 
 ```{r}
@@ -120,4 +146,8 @@ mouse.david <- enrichDAVID(gene = mouse.genes.entrez$ENTREZID,,
 ```{r}
 dotplot(mouse.david, showCategory=15)
 ggsave('../real/uorfs/mouse_uorf_two_samples.david.KEGG.pdf', width = 10, height=10)
+```
+```{r}
+barplot(mouse.david, showCategory=15)
+ggsave('../real/uorfs/mouse_uorf_two_samples.david.KEGG.bar.pdf', width = 10, height=10)
 ```
