@@ -86,7 +86,7 @@ ggsave('../real/uorfs/human_uorf_two_samples.david.KEGG.pdf', width = 10, height
 ```
 
 ```{r}
-dotplot(human.david, showCategory=15)
+barplot(human.david, showCategory=15)
 ggsave('../real/uorfs/human_uorf_two_samples.david.KEGG.bar.pdf', width = 10, height=10)
 ```
 
@@ -129,7 +129,7 @@ ggsave('../real/uorfs/mouse_uorf_two_samples.KEGG.pdf', width = 10, height=10)
 ```
 
 ```{r}
-dotplot(mouse.genes.KEGG, showCategory=15)
+barplot(mouse.genes.KEGG, showCategory=15)
 ggsave('../real/uorfs/mouse_uorf_two_samples.KEGG.bar.pdf', width = 10, height=10)
 ```
 
