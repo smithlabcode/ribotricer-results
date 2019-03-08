@@ -29,11 +29,26 @@ We downloaded and installed each tool by following the instruction at the follow
 * [RP-BP](https://github.com/dieterich-lab/rp-bp) (version 1.1.12)
 * [RiboCode](https://github.com/xryanglab/RiboCode) (version 1.2.10)
 
-### Data preprocessing and mapping
-blabla
-
 ### Exon level benchmarking
-blabla
+We compared RiboCop with existing methods including ORFscore, ORF-RATER,
+RibORF, RiboTaper, RP-BP and RiboCode.
+For each dataset, we selected on Ribo-seq sample and one RNA-seq sample
+to run all the tools. Some tools need both RNA-seq and Ribo-seq for input,
+such as RiboTaper, RP-BP. Tools like RiboCop and RiboCode only needs Ribo-seq
+as input, but here we will use RNA-seq as negatives for the comparison. 
+For all the Ribo-seq samples selected, the read lengths are chosen by inspecting
+the metagene plots for each read length and the P-site offset are determined
+along side. All of those information can be seen in Table \ref{tab:samples}
+
+RiboTaper is designed for exon level ORF detection, so we benchmarked
+RiboCop, RiboTaper along with other tools also supporting exon level
+detection together. We generated CCDS RPF profiles for both Ribo-seq
+and RNA-seq samples using RiboTaper (v 1.3), the file
+data\_tracks/P\_sites\_all\_tracks\_ccds is for Ribo-seq sample
+and the file data\_tracks/Centered\_RNA\_tracks\_ccds is for RNA-seq sample.
+The file results\_ccds contains the results from RiboTaper and also the
+results from ORFscore. 
+
 
 ### Gene level benchmarking
 For the gene level comparison, we again use the profiles of expressed CCDS genes from Ribo-seq
