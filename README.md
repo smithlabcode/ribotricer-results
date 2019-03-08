@@ -38,7 +38,7 @@ such as RiboTaper, RP-BP. Tools like RiboCop and RiboCode only needs Ribo-seq
 as input, but here we will use RNA-seq as negatives for the comparison. 
 For all the Ribo-seq samples selected, the read lengths are chosen by inspecting
 the metagene plots for each read length and the P-site offset are determined
-along side. All of those information can be seen in Table \ref{tab:samples}
+along side.
 
 RiboTaper is designed for exon level ORF detection, so we benchmarked
 RiboCop, RiboTaper along with other tools also supporting exon level
