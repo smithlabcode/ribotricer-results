@@ -1,14 +1,10 @@
-# Results and the scripts for benchmarking RiboCop with other methods
+# Results and the scripts for benchmarking ribotricer with other methods
 
 ### Introduction
 The benchmark method used here is partially established by RiboTaper and RiboCode. 
 The benchmark method relies on using profiles of expressed CCDS exons or genes from 
 Ribo-seq data as true positives and those from RNA-seq data as true negatives
-to assess the performance of each method. Beside testing their ability to distinguish
-between true positives and true negatives, we also use those tools in real application
-and compare the translating ORFs detected with the proteomic evidence. Lastly,
-we applied each tool to the replicates of a dataset, to further see if the ORFs detected
-are similar across replicates. To get a comprehensive understanding of the performance
+to assess the performance of each method. To get a comprehensive understanding of the performance
 of each method, and also to account for the high heterogeneity of Ribo-seq data,
 we seleted ten datasets, including five human datasets and five mouse datasets for the
 benchmarking.
@@ -16,7 +12,7 @@ benchmarking.
 Since RiboTaper was originally designed for detecting actively translating exons and was
 assessed its performance at exon level, we followed the convention used in RiboCode to
 compare the tools supporting exon level detection in the first group. 
-RiboCop along with ORFscore, RiboTaper and RiboCode are compared at exon level ORF detection.
+Ribotricer along with ORFscore, RiboTaper and RiboCode are compared at exon level ORF detection.
 For those tools which only work at gene or transcript level detection, including ORF-Rater, RibORF,
 RiboHMM, and RP-BP, we performed the comparison in a second group. 
 
@@ -50,8 +46,8 @@ The file results\_ccds contains the results from RiboTaper and also the
 results from ORFscore. 
 
 
-### Gene level benchmarking
-For the gene level comparison, we again use the profiles of expressed CCDS genes from Ribo-seq
+### Transcript level benchmarking
+For the transcript level comparison, we again use the profiles of expressed CCDS genes from Ribo-seq
 dta as true positives and those from RNA-seq data as true negatives. In order to have a fair
 comparison, the bam files mapped with ```STAT``` are intersected with the CCDS bed file so that
 only the reads originating from CCDS regions are used. This step is done with ```bedtools intersect```
