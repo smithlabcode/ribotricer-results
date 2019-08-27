@@ -1,0 +1,67 @@
+import os
+import errno
+
+RIBOCODE_SCRIPT = '/home/cmb-panasas2/skchoudh/github_projects/ribotricer-results/tools/ribotaper/generate_ribocode_pvalue.py'
+
+def mkdir_p(path):
+    """Python version mkdir -p
+    Parameters
+    ----------
+    path : string
+           Path to directory to create
+    """
+    if path:
+        try:
+            os.makedirs(path)
+        except OSError as exc:  # Python >2.5
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else:
+                raise
+
+
+include:
+    config['config_path']
+
+mkdir_p(os.path.join(OUT_DIR, 'slurm-logs'))
+workdir: OUT_DIR
+rule all:
+  input:
+    'ribotricer_results/'+ SRP +'_results.txt',
+    'ribocode_results/'+ SRP +'.txt'
+
+"""
+rule run_ribotaper:
+  input:
+    rna = ancient(RAWDATA_DIR + '/bams_unique/' + RNA_SAMPLE + '.bam'),
+    ribo = ancient(RAWDATA_DIR + '/bams_unique/' + RIBO_SAMPLE + '.bam')
+  threads: 16
+  params:
+    prefix = OUT_DIR + '/' + 'ribotaper_results'
+  output:
+    psites = 'ribotaper_results/data_tracks/P_sites_all_tracks_ccds',
+    centered_rna = 'ribotaper_results/data_tracks/Centered_RNA_tracks_ccds',
+  shell:
+    r'''cd {params.prefix} && bash {RIBOTAPER_SH} {input.ribo} {input.rna} {RIBOTAPER_ANNOTATION} {READ_LENGTHS} {PSITE_OFFSETS} {threads}'''
+
+"""
+rule generate_ribocode_pvalue:
+  input:
+    psites = ancient('ribotaper_results/data_tracks/P_sites_all_tracks_ccds'),
+    centered_rna = ancient('ribotaper_results/data_tracks/Centered_RNA_tracks_ccds'),
+    frame_file = ancient(RIBOTAPER_ANNOTATION + '/frames_ccds')
+  output: 'ribocode_results/' + SRP +'.txt'
+  shell:
+    r'''python {RIBOCODE_SCRIPT} --psite {input.psites} --centered_rna {input.centered_rna} --frame {input.frame_file} --out {output}'''
+
+
+rule generate_ribotricer_score:
+  input:
+    psites = ancient('ribotaper_results/data_tracks/P_sites_all_tracks_ccds'),
+    centered_rna = ancient('ribotaper_results/data_tracks/Centered_RNA_tracks_ccds'),
+    frame_file = ancient(RIBOTAPER_ANNOTATION + '/frames_ccds')
+  output: 'ribotricer_results/' + SRP + '_results.txt'
+  params:
+    prefix = 'ribotricer_results/' + SRP
+  shell:
+    r'''ribotricer benchmark --rna {input.centered_rna} --ribo {input.psites} --prefix {params.prefix}'''
