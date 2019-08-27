@@ -2,6 +2,9 @@ import os
 import errno
 
 RIBOCODE_SCRIPT = '/home/cmb-panasas2/skchoudh/github_projects/ribotricer-results/tools/ribotaper/generate_ribocode_pvalue.py'
+GENERATE_ROC_SCRIPT = '/home/cmb-panasas2/skchoudh/github_projects/ribotricer-results/tools/ribotaper/generate_ROC_input.py'
+ROCR_SCRIPT = '/home/cmb-panasas2/skchoudh/github_projects/ribotricer-results/tools/ribotaper/ROC.R'
+FSCORE_SCRIPT = '/home/cmb-panasas2/skchoudh/github_projects/ribotricer-results/tools/ribotaper/fscore.R'
 
 def mkdir_p(path):
     """Python version mkdir -p
@@ -28,7 +31,9 @@ workdir: OUT_DIR
 rule all:
   input:
     'ribotricer_results/'+ SRP +'_results.txt',
-    'ribocode_results/'+ SRP +'.txt'
+    'ribocode_results/'+ SRP +'.txt',
+    'ROC_output/' + SRP + '_fscore.txt',
+    'ROC_output/' + SRP + '_auc.txt',
 
 """
 rule run_ribotaper:
@@ -65,3 +70,28 @@ rule generate_ribotricer_score:
     prefix = 'ribotricer_results/' + SRP
   shell:
     r'''ribotricer benchmark --rna {input.centered_rna} --ribo {input.psites} --prefix {params.prefix}'''
+
+rule generate_ROC_input:
+  input:
+    ribotaper_result='ribotaper_results/results_ccds',
+    ribocode_result='ribocode_results/' + SRP +'.txt',
+    ribotricer_result='ribotricer_results/' + SRP +'_results.txt',
+  output: 'ROC_input/' + SRP + '.txt'
+  shell:
+    r'''python {GENERATE_ROC_SCRIPT} --ribotaper_result {input.ribotaper_result} --ribocode_result {input.ribocode_result} --ribotricer_result {input.ribotricer_result} --out {output}'''
+
+
+rule calc_ROC:
+  input: 'ROC_input/' + SRP + '.txt'
+  output:
+    auc = 'ROC_output/' + SRP + '_auc.txt',
+    pdf = 'ROC_output/' + SRP + '_roc_auc.pdf'
+  shell:
+    r'''Rscript {ROCR_SCRIPT} {input} {output.pdf} {output.auc}'''
+
+rule calc_fscore:
+  input: 'ROC_input/' + SRP + '.txt'
+  output: 'ROC_output/' + SRP + '_fscore.txt'
+  shell:
+    r'''Rscript {FSCORE_SCRIPT} {input} {output}'''
+
