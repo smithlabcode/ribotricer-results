@@ -1,0 +1,1 @@
+bash create_annotations_files.bash /home/cmb-panasas2/skchoudh/genomes/GRCg6/annotation/Gallus_gallus.GRCg6a.96.chr.gtf /home/cmb-panasas2/skchoudh/genomes/GRCg6/fasta/Gallus_gallus.GRCg6a.dna.toplevel.fa false false /home/cmb-panasas2/skchoudh/genomes/GRCg6/ribotaper_annotation_v96

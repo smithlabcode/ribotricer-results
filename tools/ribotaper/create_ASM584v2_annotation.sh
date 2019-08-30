@@ -1,0 +1,1 @@
+bash create_annotations_files.bash /home/cmb-panasas2/skchoudh/genomes/ASM584v2/annotation/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.44.gtf /home/cmb-panasas2/skchoudh/genomes/ASM584v2/fasta/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.dna.toplevel.fa false false /home/cmb-panasas2/skchoudh/genomes/ASM584v2/ribotaper_annotation_v44

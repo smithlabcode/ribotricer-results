@@ -1,0 +1,1 @@
+bash create_annotations_files.bash /home/cmb-panasas2/skchoudh/genomes/Epr1/annotation/Plasmodium_falciparum.EPr1.44.gtf /home/cmb-panasas2/skchoudh/genomes/Epr1/fasta/Plasmodium_falciparum.EPr1.dna.toplevel.fa false false /home/cmb-panasas2/skchoudh/genomes/Epr1/ribotaper_annotation_v44

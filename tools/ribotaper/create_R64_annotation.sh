@@ -1,0 +1,1 @@
+bash create_annotations_files.bash /home/cmb-panasas2/skchoudh/genomes/R64-1-1/annotation/Saccharomyces_cerevisiae.R64-1-1.96.gtf /home/cmb-panasas2/skchoudh/genomes/R64-1-1/fasta/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa false false /home/cmb-panasas2/skchoudh/genomes/R64-1-1/ribotaper_annotation_v96
