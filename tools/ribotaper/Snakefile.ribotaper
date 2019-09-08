@@ -35,7 +35,7 @@ rule all:
     'ROC_output/' + SRP + '_fscore.txt',
     'ROC_output/' + SRP + '_auc.txt',
 
-#"""
+"""
 rule run_ribotaper:
   input:
     rna = ancient(RAWDATA_DIR + '/bams_unique/' + RNA_SAMPLE + '.bam'),
@@ -50,7 +50,7 @@ rule run_ribotaper:
   shell:
     r'''cd {params.prefix} && bash {RIBOTAPER_SH} {input.ribo} {input.rna} {RIBOTAPER_ANNOTATION} {READ_LENGTHS} {PSITE_OFFSETS} {threads}'''
 
-#"""
+"""
 
 rule generate_ribocode_pvalue:
   input:
