@@ -1,5 +1,8 @@
 # Results and the scripts for benchmarking ribotricer with other methods
 
+[Online Paper](https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/btz878/5637228) | [PDF](https://saket-choudhary.me/pdfs/ribotricer_2019.pdf) | [Supplementary File](https://saket-choudhary.me/pdfs/ribotricer_2019.pdf) | [ribotricer code](https://github.com/smithlabcode/ribotricer)
+
+
 ### Introduction
 The benchmark method used here is partially established by RiboTaper and RiboCode. 
 The benchmark method relies on using profiles of expressed CCDS exons or genes from 
